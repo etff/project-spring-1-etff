@@ -1,4 +1,4 @@
-package com.mogaco.study;
+package com.mogaco.project;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

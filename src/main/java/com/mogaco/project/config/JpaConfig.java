@@ -1,4 +1,4 @@
-package com.mogaco.study.config;
+package com.mogaco.project.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

@@ -1,4 +1,4 @@
-package com.mogaco.study.config;
+package com.mogaco.project.config;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;

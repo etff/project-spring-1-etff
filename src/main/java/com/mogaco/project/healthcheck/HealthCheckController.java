@@ -1,4 +1,4 @@
-package com.mogaco.study.healthcheck;
+package com.mogaco.project.healthcheck;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
