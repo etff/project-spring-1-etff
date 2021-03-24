@@ -1,6 +1,5 @@
 package com.mogaco.project.meet.domain;
 
-import com.mogaco.project.config.BaseEntity;
 import com.mogaco.project.study.domain.Location;
 import com.mogaco.project.study.domain.Study;
 import lombok.AccessLevel;
@@ -14,11 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import java.time.LocalDate;
-
-import static javax.persistence.FetchType.LAZY;
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO : 리더, 이미지 컬럼 추가
 /**
@@ -27,13 +25,13 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meet extends BaseEntity {
+public class Meet {
 
     /**
      * 모임 식별자.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -66,18 +64,26 @@ public class Meet extends BaseEntity {
     /**
      * 공부 주제.
      */
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL )
-    @JoinColumn(name = "study_id")
-    private Study study;
+    @OneToMany(mappedBy = "meet", cascade = CascadeType.ALL)
+    private List<Study> studies = new ArrayList<>();
 
     @Builder
-    public Meet(Long id, LocalDate startedAt, String time, int count, Location location, Message message, Study study) {
+    public Meet(Long id, LocalDate startedAt, String time, int count, Location location, Message message, List<Study> studies) {
         this.id = id;
         this.startedAt = startedAt;
         this.time = time;
         this.count = count;
         this.location = location;
         this.message = message;
-        this.study = study;
+        this.studies = studies;
+    }
+
+    /**
+     * 모임 참가하기.
+     * @param study 공부
+     */
+    public void addStudy(Study study) {
+        studies.add(study);
+        study.setMeet(this);
     }
 }
