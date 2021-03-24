@@ -43,7 +43,6 @@ public class Study extends BaseEntity {
     /**
      * 참가인원.
      */
-    @Transient
     private int count;
 
     /**
