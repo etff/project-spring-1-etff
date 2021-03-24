@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,7 +49,8 @@ public class Study extends BaseEntity {
     /**
      * 장소.
      */
-    private String location;
+    @Embedded
+    private Location location;
 
     /**
      * 제목.
@@ -67,7 +69,7 @@ public class Study extends BaseEntity {
     private String myStudy;
 
     @Builder
-    public Study(Long id, LocalDate startedAt, String time, int count, String location, String title, String message, String myStudy) {
+    public Study(Long id, LocalDate startedAt, String time, int count, Location location, String title, String message, String myStudy) {
         this.id = id;
         this.startedAt = startedAt;
         this.time = time;
