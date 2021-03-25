@@ -55,7 +55,7 @@ public class Meet {
     private Location location;
 
     /**
-     * 모임 모집 내용.
+     * 메시지.
      */
     @Embedded
     private Message message;
