@@ -10,7 +10,13 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @Getter
 public class Location {
+    /**
+     * 장소.
+     */
     private String location;
+    /**
+     * 상세.
+     */
     private String detail;
 
     public Location(String location, String detail) {

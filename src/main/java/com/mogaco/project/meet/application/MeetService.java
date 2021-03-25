@@ -3,10 +3,13 @@ package com.mogaco.project.meet.application;
 import com.mogaco.project.meet.domain.Meet;
 import com.mogaco.project.meet.domain.MeetSupplier;
 import com.mogaco.project.meet.domain.Message;
+import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import com.mogaco.project.meet.infra.MeetRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,10 @@ public class MeetService {
                 .build();
         final Meet saved = meetRepository.save(meet);
         return saved.getId();
+    }
+
+    public Page<MainResponseDto> getMeetingsByPageRequest(Pageable pageable) {
+        return meetRepository.searchMainPage(pageable);
     }
 
     private Message getMessage(MeetSupplier meetSupplier) {
