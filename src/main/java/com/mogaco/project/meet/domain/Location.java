@@ -1,4 +1,4 @@
-package com.mogaco.project.study.domain;
+package com.mogaco.project.meet.domain;
 
 
 import lombok.Getter;

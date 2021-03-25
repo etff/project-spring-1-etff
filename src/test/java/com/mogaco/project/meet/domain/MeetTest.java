@@ -1,6 +1,5 @@
 package com.mogaco.project.meet.domain;
 
-import com.mogaco.project.study.domain.Location;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;

@@ -1,6 +1,5 @@
 package com.mogaco.project.meet.domain;
 
-import com.mogaco.project.study.domain.Location;
 import com.mogaco.project.study.domain.Study;
 import lombok.AccessLevel;
 import lombok.Builder;
