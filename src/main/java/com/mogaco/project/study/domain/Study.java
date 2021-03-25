@@ -32,16 +32,16 @@ public class Study {
     /**
      * 공부 주제.
      */
-    private String myStudy;
+    private String subject;
 
     @ManyToOne
     @JoinColumn(name = "meet_id")
     private Meet meet;
 
     @Builder
-    public Study(Long id, String myStudy, Meet meet) {
+    public Study(Long id, String subject, Meet meet) {
         this.id = id;
-        this.myStudy = myStudy;
+        this.subject = subject;
         this.meet = meet;
     }
 
