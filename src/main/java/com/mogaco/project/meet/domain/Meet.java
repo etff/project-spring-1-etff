@@ -1,5 +1,6 @@
 package com.mogaco.project.meet.domain;
 
+import com.mogaco.project.global.config.BaseEntity;
 import com.mogaco.project.study.domain.Study;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -24,7 +25,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Meet {
+public class Meet extends BaseEntity {
 
     /**
      * 모임 식별자.
