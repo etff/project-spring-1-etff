@@ -58,7 +58,7 @@ class MeetServiceTest {
 
             }
 
-            @DisplayName("모임 식별자을 리턴한다.")
+            @DisplayName("모임 식별자를 리턴한다.")
             @Test
             void it_returns_id() {
                 Long meetId = meetService.createMeeting(meetRequestDto);
