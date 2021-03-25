@@ -23,9 +23,9 @@ public class MeetRepositoryImpl implements MeetRepositoryCustom {
         QueryResults<MainResponseDto> result = queryFactory
                 .select(new QMainResponseDto(
                         meet.id.as("meetId"),
-                        meet.startedAt,
+                        meet.meetTime.startedAt,
                         meet.message.title,
-                        meet.time,
+                        meet.meetTime.time,
                         meet.message.title
                 ))
                 .from(meet)

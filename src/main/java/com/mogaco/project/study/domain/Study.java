@@ -45,6 +45,12 @@ public class Study {
         this.meet = meet;
     }
 
+    public static Study createStudy(String subject) {
+        return Study.builder()
+                .subject(subject)
+                .build();
+    }
+
     public void setMeet(Meet meet) {
         this.meet = meet;
     }

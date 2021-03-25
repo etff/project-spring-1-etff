@@ -17,18 +17,18 @@ class MeetTest {
     void create() {
         final Location givenLocation = new Location("seoul", "hongdae");
         final Message givenMessage = new Message(TITLE, MESSAGE);
+        final MeetTime givenMeetTime = new MeetTime(STARTED_AT, TIME);
 
         Meet meet = Meet.builder()
                 .location(givenLocation)
                 .message(givenMessage)
                 .count(COUNT)
-                .startedAt(STARTED_AT)
-                .time(TIME)
+                .meetTime(givenMeetTime)
                 .build();
 
         assertThat(meet.getCount()).isEqualTo(COUNT);
         assertThat(meet.getLocation()).isEqualTo(givenLocation);
-        assertThat(meet.getCount()).isEqualTo(COUNT);
-        assertThat(meet.getCount()).isEqualTo(COUNT);
+        assertThat(meet.getMessage()).isEqualTo(givenMessage);
+        assertThat(meet.getMeetTime()).isEqualTo(givenMeetTime);
     }
 }

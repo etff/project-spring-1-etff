@@ -1,11 +1,14 @@
 package com.mogaco.project.meet.application;
 
+import com.mogaco.project.meet.domain.Location;
 import com.mogaco.project.meet.domain.Meet;
 import com.mogaco.project.meet.domain.MeetSupplier;
+import com.mogaco.project.meet.domain.MeetTime;
 import com.mogaco.project.meet.domain.Message;
 import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import com.mogaco.project.meet.infra.MeetRepository;
+import com.mogaco.project.study.domain.Study;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -37,14 +40,10 @@ public class MeetService {
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException();
         }
+        final Location location = locationConverter.getLocation(dto);
+        final Study study = Study.createStudy(dto.getSubject());
 
-        final Meet meet = Meet.builder()
-                .time(dto.getTime())
-                .startedAt(dto.getStartedAt())
-                .count(dto.getCount())
-                .message(getMessage(dto))
-                .location(locationConverter.getLocation(dto))
-                .build();
+        final Meet meet = Meet.of(getMeetTime(dto), dto.getCount(), location, getMessage(dto), study);
         final Meet saved = meetRepository.save(meet);
         return saved.getId();
     }
@@ -55,5 +54,9 @@ public class MeetService {
 
     private Message getMessage(MeetSupplier meetSupplier) {
         return new Message(meetSupplier.getTitle(), meetSupplier.getMessage());
+    }
+
+    private MeetTime getMeetTime(MeetSupplier meetSupplier) {
+        return new MeetTime(meetSupplier.getStartedAt(), meetSupplier.getTime());
     }
 }

@@ -14,7 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,14 +34,10 @@ public class Meet extends BaseEntity {
     private Long id;
 
     /**
-     * 시작일.
-     */
-    private LocalDate startedAt;
-
-    /**
      * 시간.
      */
-    private String time;
+    @Embedded
+    MeetTime meetTime;
 
     /**
      * 인원.
@@ -68,14 +63,27 @@ public class Meet extends BaseEntity {
     private List<Study> studies = new ArrayList<>();
 
     @Builder
-    public Meet(Long id, LocalDate startedAt, String time, int count, Location location, Message message, List<Study> studies) {
+    public Meet(Long id, MeetTime meetTime, int count, Location location, Message message, List<Study> studies) {
         this.id = id;
-        this.startedAt = startedAt;
-        this.time = time;
+        this.meetTime = meetTime;
         this.count = count;
         this.location = location;
         this.message = message;
         this.studies = studies;
+    }
+
+    public static Meet of(MeetTime meetTime, int count, Location location, Message message, Study study) {
+        final Meet meet = Meet.builder()
+                .meetTime(meetTime)
+                .count(count)
+                .message(message)
+                .studies(new ArrayList<>())
+                .location(location)
+                .build();
+
+        // 최초 생성시, 본인 공부 설정
+        meet.addStudy(study);
+        return meet;
     }
 
     /**

@@ -51,8 +51,7 @@ class MeetServiceTest {
                             .location(source.getLocation())
                             .message(source.getMessage())
                             .count(source.getCount())
-                            .startedAt(source.getStartedAt())
-                            .time(source.getTime())
+                            .meetTime(source.getMeetTime())
                             .build();
                 });
 

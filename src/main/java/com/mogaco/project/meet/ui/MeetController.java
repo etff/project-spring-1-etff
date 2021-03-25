@@ -26,7 +26,7 @@ public class MeetController {
     private final MeetService meetService;
 
     @PostMapping
-    public ResponseEntity createMeeting(@RequestBody @Valid MeetRequestDto dto) {
+    public ResponseEntity<Long> createMeeting(@RequestBody @Valid MeetRequestDto dto) {
         final Long meetId = meetService.createMeeting(dto);
 
         return ResponseEntity.created(URI.create("/meets/" + meetId))
