@@ -35,17 +35,17 @@ public class Meet {
     private Long id;
 
     /**
-     * 스터디 일자.
+     * 시작일.
      */
     private LocalDate startedAt;
 
     /**
-     * 스터디 시간.
+     * 시간.
      */
     private String time;
 
     /**
-     * 참가인원 제한.
+     * 인원.
      */
     private int count;
 

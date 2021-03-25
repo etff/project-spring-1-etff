@@ -16,19 +16,19 @@ class MeetTest {
 
     @Test
     void create() {
-        final Location location = new Location("seoul", "hongdae");
-        final Message message = new Message(TITLE, MESSAGE);
+        final Location givenLocation = new Location("seoul", "hongdae");
+        final Message givenMessage = new Message(TITLE, MESSAGE);
 
         Meet meet = Meet.builder()
-                .location(location)
-                .message(message)
+                .location(givenLocation)
+                .message(givenMessage)
                 .count(COUNT)
                 .startedAt(STARTED_AT)
                 .time(TIME)
                 .build();
 
         assertThat(meet.getCount()).isEqualTo(COUNT);
-        assertThat(meet.getLocation()).isEqualTo(location);
+        assertThat(meet.getLocation()).isEqualTo(givenLocation);
         assertThat(meet.getCount()).isEqualTo(COUNT);
         assertThat(meet.getCount()).isEqualTo(COUNT);
     }
