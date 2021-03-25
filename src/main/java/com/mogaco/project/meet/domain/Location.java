@@ -10,11 +10,11 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor
 @Getter
 public class Location {
-    private String city;
+    private String location;
     private String detail;
 
-    public Location(String city, String detail) {
-        this.city = city;
+    public Location(String location, String detail) {
+        this.location = location;
         this.detail = detail;
     }
 }
