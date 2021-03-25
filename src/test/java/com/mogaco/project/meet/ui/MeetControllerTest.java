@@ -65,4 +65,17 @@ class MeetControllerTest {
 
         verify(meetService).createMeeting(any(MeetRequestDto.class));
     }
+
+    @Test
+    void createWithInvalidAttributes() throws Exception {
+        final MeetRequestDto dto = MeetRequestDto.builder()
+                .build();
+
+        mockMvc.perform(
+                post("/api/v1/meets")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(dto))
+        )
+                .andExpect(status().isBadRequest());
+    }
 }
