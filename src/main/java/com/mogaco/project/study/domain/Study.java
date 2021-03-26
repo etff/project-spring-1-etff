@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 // TODO: 담당자(member) 추가
+
 /**
  * 공부 주제.
  */
