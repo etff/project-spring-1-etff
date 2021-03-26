@@ -1,10 +1,11 @@
 import {Layout} from "antd";
 import Main from "../components/meet/Main";
-import Login from "../components/Login";
-import Join from "../components/Join";
+import Login from "../components/auth/Login";
+import Join from "../components/auth/Join";
 import NavBar from "../components/NavBar";
 import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
 import {Content} from "antd/lib/layout/layout";
+import Foot from "../components/Foot";
 
 const MyRouter = () => {
   return (
@@ -22,6 +23,7 @@ const MyRouter = () => {
               <Route path="/join" exact component={Join} />
               <Redirect from="*" to="/" />
             </Content>
+            <Foot />
           </Layout>
         </Layout>
       </Router>

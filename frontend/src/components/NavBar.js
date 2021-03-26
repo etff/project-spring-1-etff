@@ -6,12 +6,12 @@ import {Link} from "react-router-dom";
 const NavBar = () => {
   return (
     <Header>
-      <div className="logo" />
       <Row>
-        <Col span={20}>
+        <Col span={1} />
+        <Col span={19}>
           <div className="icons-list">
             <Link to="/">
-              <HomeTwoTone />
+              <HomeTwoTone style={{ fontSize: "20px" }} />
             </Link>
           </div>
         </Col>
