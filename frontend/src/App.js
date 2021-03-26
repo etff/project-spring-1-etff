@@ -1,9 +1,17 @@
 import "./App.css";
 import MyRouter from "./routes/Router";
-import { Router } from "react-router-dom";
+import {Provider} from "react-redux";
+import {ConnectedRouter} from "connected-react-router";
+import store, {history} from "./store";
 
-function App() {
-  return <MyRouter />;
-}
+const App = () => {
+  return (
+    <Provider store={store}>
+      <ConnectedRouter history={history}>
+        <MyRouter />
+      </ConnectedRouter>
+    </Provider>
+  );
+};
 
 export default App;

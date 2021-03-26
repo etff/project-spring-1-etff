@@ -1,8 +1,7 @@
-import React from "react";
-import { Header } from "antd/lib/layout/layout";
-import { HomeOutlined, HomeTwoTone } from "@ant-design/icons";
-import { Col, Menu, Row } from "antd";
-import { Link } from "react-router-dom";
+import {Header} from "antd/lib/layout/layout";
+import {HomeTwoTone} from "@ant-design/icons";
+import {Col, Menu, Row} from "antd";
+import {Link} from "react-router-dom";
 
 const NavBar = () => {
   return (
