@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 // TODO : 리더, 이미지 컬럼 추가
+
 /**
  * 모임.
  */
@@ -88,6 +89,7 @@ public class Meet extends BaseEntity {
 
     /**
      * 모임 참가하기.
+     *
      * @param study 공부
      */
     public void addStudy(Study study) {

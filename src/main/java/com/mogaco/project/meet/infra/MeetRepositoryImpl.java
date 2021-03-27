@@ -38,7 +38,4 @@ public class MeetRepositoryImpl implements MeetRepositoryCustom {
 
         return new PageImpl<>(content, pageable, total);
     }
-
-
-
 }
