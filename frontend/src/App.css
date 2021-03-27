@@ -32,19 +32,21 @@
   from {
     transform: rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
-  }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .site-layout .site-layout-background {
-  background: #fff;
+    background: #fff;
 }
-/* [data-theme="dark"] .site-layout .site-layout-background {
-  background: #141414;
-} */
 
-.site-card-wrapper {
-  padding: 30px;
-  background: #ececec;
+.site-page-header {
+    background: #fff;
+}
+
+.space-align-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-item: flex-start;
 }

@@ -9,7 +9,7 @@ const loadMeetAPI = (payload) => {
 function* loadMeets(action) {
   try {
     const result = yield call(loadMeetAPI, action.payload);
-    console.log(result, "loadMeets");
+
     yield put({
       type: MEET_LOADING_SUCCESS,
       payload: result.data,

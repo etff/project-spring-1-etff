@@ -1,10 +1,12 @@
 import "antd/dist/antd.css";
-import {Spin} from "antd";
+import {Col, Row, Spin} from "antd";
 
 export const GrowingSpinner = (
-  <>
-    <Row className="d-flex justify-content-center m-5">
-      <Spin />
-    </Row>
-  </>
+    <>
+        <Row>
+            <Col span={12}>
+                <Spin/>
+            </Col>
+        </Row>
+    </>
 );

@@ -30,7 +30,8 @@ export default function (state = initialState, action) {
     case MEET_LOADING_SUCCESS:
       return {
         ...state,
-        meets: [...state.meets],
+        meets: [...state.meets, ...action.payload.content],
+        meetCount: action.payload.totalElements,
         loading: false,
       };
 
