@@ -25,6 +25,7 @@ export default function (state = initialState, action) {
     case MEET_LOADING_REQUEST:
       return {
         ...state,
+        meets: [],
         loading: true,
       };
     case MEET_LOADING_SUCCESS:
