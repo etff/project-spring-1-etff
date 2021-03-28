@@ -27,6 +27,11 @@ Mogaco
 ## 사용 기술 및 환경
 Spring boot, JPA, H2-Database React, Saga, Redux
 <br />
+- Spring Boot는 이미 많은 회사에서 백엔드 기술로 사용되고 있습니다. 
+  Spring 에 비해 간단한 설정으로 웹 개발을 진행할 수 있습니다.
+- JPA는 빠른 생산성이 장점입니다. 객체와 DB와 맵핑을 자동으로 해주어 개발 편의성이 높습니다.
+- React은 현재 Frontend에서 많이 쓰이는 개발 환경입니다. 컨포넌트 개발 방식으로 재활용성이 높고, SPA에서 좋은 성능을 보여줍니다.
+- Redux Saga 프론트 환경에서 상태 관리 라이브러리입니다. Front에서 상태(state) 관리를 위해 사용했습니다.   
 
 ## 화면 설계
 https://ovenapp.io/view/GzVdPmkgMyAk6VUQbIvyQQA1PqqB0J7K/
