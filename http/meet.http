@@ -1,0 +1,13 @@
+###
+POST {{host}}/api/v1/meets
+Content-Type: application/json
+
+{
+  "location": "seoul/ hondae",
+  "title": "mogaco",
+  "count": 5,
+  "message": "study",
+  "time": "10:00 ~ 14:00",
+  "subject": "DevOps",
+  "startedAt": "2021-04-01"
+}
