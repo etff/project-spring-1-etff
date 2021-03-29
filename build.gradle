@@ -24,6 +24,11 @@ repositories {
     mavenCentral()
 }
 
+node {
+    download = true
+    version='12.13.0'
+}
+
 ext {
     set('snippetsDir', file("build/generated-snippets"))
 }
