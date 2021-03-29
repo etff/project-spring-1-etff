@@ -24,7 +24,7 @@ public class MemberService {
         }
         final String encodedPassword = passwordEncoder.getEncodedPassword(dto);
         final Member member = Member.of(dto.getName(), dto.getEmail(), encodedPassword);
-        Member saved = memberRepository.save(member);
+        final Member saved = memberRepository.save(member);
 
         return saved.getId();
     }
