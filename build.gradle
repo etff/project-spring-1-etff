@@ -73,7 +73,7 @@ asciidoctor {
 node {
     version = "12.13.0"
     download = true
-    nodeModulesDir = file("${project.projectDir}/build")
+    nodeModulesDir = file("${project.projectDir}/frontend/build")
 }
 
 def webappDir = "$projectDir/frontend"
