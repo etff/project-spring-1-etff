@@ -7,7 +7,7 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 
     // nodejs builder
-    id "com.moowork.node" version "1.3.1"
+    id("com.github.node-gradle.node") version "2.2.0"
 }
 
 group = 'com.mogaco'
@@ -25,14 +25,14 @@ repositories {
 }
 
 node {
-    version = '12.6.1'
-    npmVersion = '6.10.2'
-    distBaseUrl = 'https://nodejs.org/dist'
-    download = false
-    workDir = file("${project.buildDir}/nodejs")
-    npmWorkDir = file("${project.buildDir}/npm")
-    yarnWorkDir = file("${project.buildDir}/yarn")
-    nodeModulesDir = file("${project.projectDir}")
+    download = true
+    version = "12.13.1"
+    npmVersion = "6.9.0"
+    yarnVersion = "1.17.3"
+    nodeModulesDir = project.file("ui")
+    workDir = project.file("${project.buildDir}/nodejs")
+    npmWorkDir = project.file("${project.buildDir}/npm")
+    yarnWorkDir = project.file("${project.buildDir}/yarn")
 }
 
 ext {
