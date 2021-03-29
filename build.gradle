@@ -70,6 +70,12 @@ asciidoctor {
     dependsOn test
 }
 
+node {
+    version = "12.21.0"
+    download = true
+    nodeModulesDir = file("${project.projectDir}/build")
+}
+
 def webappDir = "$projectDir/frontend"
 
 task appNpmInstall(type: NpmTask) {
