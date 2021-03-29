@@ -54,10 +54,11 @@ public class Member {
         this.deleted = deleted;
     }
 
-    public static Member of(String name, String email) {
+    public static Member of(String name, String email, String password) {
         return Member.builder()
                 .name(name)
                 .email(email)
+                .password(password)
                 .deleted(false)
                 .build();
     }

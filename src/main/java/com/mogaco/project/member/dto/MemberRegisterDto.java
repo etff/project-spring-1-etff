@@ -1,5 +1,6 @@
 package com.mogaco.project.member.dto;
 
+import com.mogaco.project.member.domain.MemberSupplier;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.Size;
  * 회원 등록 명세서.
  */
 @Getter
-public class MemberRegisterDto {
+public class MemberRegisterDto implements MemberSupplier {
     /**
      * 사용자 이름.
      */
