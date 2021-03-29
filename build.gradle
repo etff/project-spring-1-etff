@@ -27,6 +27,12 @@ repositories {
 node {
     download = true
     version = "12.13.1"
+    npmVersion = "6.9.0"
+    yarnVersion = "1.17.3"
+    nodeModulesDir = project.file("frontend")
+    workDir = project.file("${project.buildDir}/frontend")
+    npmWorkDir = project.file("${project.buildDir}/npm")
+    yarnWorkDir = project.file("${project.buildDir}/yarn")
 }
 
 ext {
