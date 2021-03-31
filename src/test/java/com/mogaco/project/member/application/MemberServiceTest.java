@@ -4,14 +4,12 @@ import com.mogaco.project.global.utils.CustomPasswordEncoder;
 import com.mogaco.project.member.domain.Member;
 import com.mogaco.project.member.domain.MemberRepository;
 import com.mogaco.project.member.dto.MemberRegisterDto;
+import com.mogaco.project.member.dto.MemberResponse;
 import com.mogaco.project.member.dto.MemberUpdateDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
@@ -20,23 +18,22 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
-@ExtendWith(MockitoExtension.class)
 class MemberServiceTest {
   private static Long GIVEN_ID = 1L;
+  private static Long NOT_EXISTED_ID = -1L;
   private static String GIVEN_NAME = "user1";
   private static String GIVEN_EMAIL = "test@test.com";
   private static String GIVEN_PASSWORD = "test";
   private static String UPDATE_NAME = GIVEN_NAME + "_UPDATED";
   private static String UPDATE_EMAIL = GIVEN_EMAIL + "_UPDATED";
 
-  @Mock
-  private CustomPasswordEncoder passwordEncoder;
+  private CustomPasswordEncoder passwordEncoder = mock(CustomPasswordEncoder.class);
 
   private MemberService memberService;
 
-  @Mock
-  private MemberRepository memberRepository;
+  private MemberRepository memberRepository = mock(MemberRepository.class);
 
   @BeforeEach
   void setUp() {
@@ -112,6 +109,45 @@ class MemberServiceTest {
       void it_throws_member_not_found_exception() {
         assertThrows(
                 MemberNotFoundException.class, () -> memberService.updateMember(GIVEN_ID, updateDto));
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("getMember 메서드는")
+  class Describe_getMember {
+
+    @Nested
+    @DisplayName("등록된 회원 id가 주어지면")
+    class Context_with_member_id {
+      final Long memberId = GIVEN_ID;
+      final MemberResponse memberResponse =
+              MemberResponse.builder().id(GIVEN_ID).name(GIVEN_NAME).email(GIVEN_EMAIL).build();
+
+      @BeforeEach
+      void setUp() {
+        given(memberRepository.findByIdAndDeletedIsFalse(memberId))
+                .willReturn(
+                        Optional.of(
+                                Member.builder().id(GIVEN_ID).name(GIVEN_NAME).email(GIVEN_EMAIL).build()));
+      }
+
+      @DisplayName("회원 정보를 리턴한다.")
+      @Test
+      void it_returns_member_response() {
+        assertThat(memberService.getMember(memberId)).isEqualTo(memberResponse);
+      }
+    }
+
+    @Nested
+    @DisplayName("존재하지 않은 회원 id가 주어지면")
+    class Context_with_not_exist_member {
+      final Long memberId = NOT_EXISTED_ID;
+
+      @DisplayName("MemberNotFoundException 예외를 던진다.")
+      @Test
+      void it_throws_member_not_found_exception() {
+        assertThrows(MemberNotFoundException.class, () -> memberService.getMember(memberId));
       }
     }
   }
