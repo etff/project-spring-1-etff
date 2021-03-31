@@ -64,7 +64,5 @@ class MeetServiceTest {
                 assertThat(meetId).isNotNull();
             }
         }
-
-
     }
 }
