@@ -64,6 +64,17 @@ public class Member {
     }
 
     /**
+     * 사용자의 정보를 갱신합니다.
+     *
+     * @param name  사용자 이름
+     * @param email 사용자 이메일
+     */
+    public void updateMember(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
+    /**
      * 회원 비밀번호를 암호화하여 저장합니다.
      */
     public void changePassword(String password) {

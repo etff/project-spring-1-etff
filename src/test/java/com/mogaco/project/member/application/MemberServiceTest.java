@@ -41,7 +41,7 @@ class MemberServiceTest {
 
     @Nested
     @DisplayName("회원 가입 명세서가 주어지면")
-    class Context_with_member_request {
+    class Context_with_member_register_request {
       final MemberRegisterDto registerDto =
               MemberRegisterDto.builder()
                       .name(GIVEN_NAME)
@@ -71,4 +71,6 @@ class MemberServiceTest {
       }
     }
   }
+
+
 }
