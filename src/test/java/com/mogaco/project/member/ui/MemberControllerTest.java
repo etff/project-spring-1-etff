@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,7 +75,9 @@ class MemberControllerTest {
                         post("/api/v1/members")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(registerDto)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andExpect(content().string("1"));
         verify(memberService).registerMember(any(MemberRegisterDto.class));
     }
 
@@ -89,6 +93,7 @@ class MemberControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("유효한 회원 정보 갱신 명세서로 회원 갱신")
     @Test
     void updateUserWithValidAttributes() throws Exception {
         mockMvc
@@ -99,6 +104,7 @@ class MemberControllerTest {
                 .andExpect(status().isOk());
     }
 
+    @DisplayName("유효하지 않은 회원 정보 갱신 명세서로 회원 갱신")
     @Test
     void updateUserWithInValidAttributes() throws Exception {
         MemberRegisterDto dto = new MemberRegisterDto();
@@ -110,8 +116,9 @@ class MemberControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("등록된 회원 정보 가져오기")
     @Test
-    void deatilWithExsitedMember() throws Exception {
+    void detailWithExistedMember() throws Exception {
         given(memberService.getMember(GIVEN_Id))
                 .willReturn(
                         MemberResponse.builder().id(GIVEN_Id).email(GIVEN_EMAIL).name(GIVEN_NAME).build());
@@ -126,8 +133,9 @@ class MemberControllerTest {
                 .andExpect(content().string(containsString(GIVEN_NAME)));
     }
 
+    @DisplayName("등록되지 않은 회원 정보 가져오기")
     @Test
-    void deatilWithNotExsitedMember() throws Exception {
+    void detailWithNotExistedMember() throws Exception {
         given(memberService.getMember(NOT_FOUND_ID))
                 .willThrow(MemberNotFoundException.class);
 
