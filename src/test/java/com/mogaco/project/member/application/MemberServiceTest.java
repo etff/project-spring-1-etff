@@ -151,4 +151,41 @@ class MemberServiceTest {
       }
     }
   }
+
+  @Nested
+  @DisplayName("deleteMember 메서드는")
+  class Describe_deleteMember {
+
+    @Nested
+    @DisplayName("등록된 회원 id가 주어지면")
+    class Context_with_member_id {
+      final Long memberId = GIVEN_ID;
+      final Member member =
+              Member.builder().id(GIVEN_ID).name(GIVEN_NAME).email(GIVEN_EMAIL).deleted(false).build();
+
+      @BeforeEach
+      void setUp() {
+        given(memberRepository.findByIdAndDeletedIsFalse(memberId)).willReturn(Optional.of(member));
+      }
+
+      @DisplayName("회원 삭제로 표기한다 ")
+      @Test
+      void it_change_member_deleted() {
+        memberService.deleteMember(memberId);
+        assertThat(member.isDeleted()).isTrue();
+      }
+    }
+
+    @Nested
+    @DisplayName("존재하지 않은 회원 id가 주어지면")
+    class Context_with_not_exist_member {
+      final Long memberId = NOT_EXISTED_ID;
+
+      @DisplayName("MemberNotFoundException 예외를 던진다.")
+      @Test
+      void it_throws_member_not_found_exception() {
+        assertThrows(MemberNotFoundException.class, () -> memberService.deleteMember(memberId));
+      }
+    }
+  }
 }
