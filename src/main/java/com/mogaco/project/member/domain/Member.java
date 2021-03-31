@@ -75,7 +75,7 @@ public class Member {
     }
 
     /**
-     * 회원 비밀번호를 암호화하여 저장합니다.
+     * 회원 비밀번호를 변경하여 저장합니다.
      */
     public void changePassword(String password) {
         this.password = password;
