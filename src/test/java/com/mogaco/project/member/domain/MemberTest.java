@@ -39,4 +39,18 @@ class MemberTest {
     // then
     assertThat(member.isDeleted()).isTrue();
   }
+
+  @DisplayName("비밀번호를 변경할 수 있다")
+  @Test
+  void changePassword() {
+    // given
+    Member member = Member.builder().password(GIVEN_PASSWORD).build();
+    String encodedPassword = "$2a$10$InJrs2HfMfJsUmMtgtBtIOmpCrEYJcaYJbDpSA9ZdQ.tOvBGIaGPK";
+
+    // when
+    member.changePassword(encodedPassword);
+
+    // then
+    assertThat(member.getPassword()).isEqualTo(encodedPassword);
+  }
 }
