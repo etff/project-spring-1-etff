@@ -4,6 +4,7 @@ import com.mogaco.project.global.utils.CustomPasswordEncoder;
 import com.mogaco.project.member.domain.Member;
 import com.mogaco.project.member.domain.MemberRepository;
 import com.mogaco.project.member.dto.MemberRegisterDto;
+import com.mogaco.project.member.dto.MemberResponse;
 import com.mogaco.project.member.dto.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,18 @@ public class MemberService {
     public void updateMember(Long memberId, MemberUpdateDto dto) {
         final Member member = findMember(memberId);
         member.updateMember(dto.getName(), dto.getEmail());
+    }
+
+    /**
+     * 회원 식별자에 해당하는 회정 정보를 리턴한다.
+     *
+     * @param id 회원 식별자
+     * @return 사용자 정보
+     * @throws MemberNotFoundException 존재하지 않는 회원 예외
+     */
+    public MemberResponse getMember(Long id) throws MemberNotFoundException {
+        final Member member = findMember(id);
+        return new MemberResponse(member);
     }
 
     private Member findMember(Long memberId) {
