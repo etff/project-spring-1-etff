@@ -96,3 +96,4 @@ task copyWebApp(type: Copy) {
 
 copyWebApp.dependsOn(appNpmInstall)
 compileJava.dependsOn(copyWebApp)
+
