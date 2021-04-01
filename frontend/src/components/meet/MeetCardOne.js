@@ -16,7 +16,7 @@ const PostCardOne = ({meets}) => {
                           cover={
                             <img
                                 alt="example"
-                                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                                src="https://cdn.pixabay.com/photo/2021/03/18/19/56/keyboard-6105750__340.jpg"
                             />
                           }
                       >
