@@ -17,7 +17,7 @@ Mogaco
 ### 용어사전
 [용어사전](https://github.com/CodeSoom/project-spring-1-etff/wiki/%EC%9A%A9%EC%96%B4%EC%82%AC%EC%A0%84)
 
-### 일정관리
+### 일정관j리
 [트렐로](https://trello.com/b/Dslv99ST/mogaco)
 
 ### 테스트
@@ -33,5 +33,17 @@ Spring boot, JPA, H2-Database React, Saga, Redux
 - React은 현재 Frontend에서 많이 쓰이는 개발 환경입니다. 컨포넌트 개발 방식으로 재활용성이 높고, SPA에서 좋은 성능을 보여줍니다.
 - Redux Saga 프론트 환경에서 상태 관리 라이브러리입니다. Front에서 상태(state) 관리를 위해 사용했습니다.   
 
+![Deploy](./assets/jenkins.png)
+
+### CI
+- AWS ec2에 Jenkins 설치
+
+### CD
+- Jenkins 빌드, 테스트 이후 dockerhub에 저장
+- 배포된 docker image를 application 서버에 배포
+
 ## 화면 설계
 https://ovenapp.io/view/GzVdPmkgMyAk6VUQbIvyQQA1PqqB0J7K/
+
+## 모델링
+[모델링](https://github.com/CodeSoom/project-spring-1-etff/wiki/%EB%AA%A8%EB%8D%B8%EB%A7%81)
