@@ -1,6 +1,10 @@
 import "antd/dist/antd.css";
-import {Button, Col, Form, Input, Row, Typography,} from "antd";
+import {Button, Col, Form, Input, Row, Typography} from "antd";
 import {Content} from "antd/lib/layout/layout";
+import {useDispatch} from "react-redux";
+import {REGISTER_REQUEST} from "../../redux/types";
+
+const {Title} = Typography;
 
 const layout = {
   labelCol: {
@@ -10,24 +14,29 @@ const layout = {
     span: 16,
   },
 };
-/* eslint-disable no-template-curly-in-string */
-
-const validateMessages = {
-  required: "${label} is required!",
-  types: {
-    email: "${label} is not a valid email!",
-    password: "${label} is not a valid password!",
-  },
-  password: {
-    range: "${label} must be between ${min} and ${max}",
-  },
-};
-
-const {Title} = Typography;
 
 const Join = () => {
+  const dispatch = useDispatch();
+
   const onFinish = (values) => {
-    console.log(values);
+    const {name, email, password} = values;
+    const newMember = {name, email, password};
+    console.log(newMember, "newMember");
+    dispatch({
+      type: REGISTER_REQUEST,
+      payload: newMember,
+    });
+  };
+
+  const validateMessages = {
+    required: "${label} is required!",
+    types: {
+      email: "${label} is not a valid email!",
+      password: "${label} is not a valid password!",
+    },
+    password: {
+      range: "${label} must be between ${min} and ${max}",
+    },
   };
 
   return (
@@ -70,7 +79,7 @@ const Join = () => {
                       rules={[
                         {
                           required: true,
-                          message: "이름을 입력해주세요ㅕ!",
+                          message: "이름을 입력해주세요!",
                         },
                       ]}
                   >
@@ -113,9 +122,7 @@ const Join = () => {
                             }
 
                             return Promise.reject(
-                                new Error(
-                                    "The two passwords that you entered do not match!"
-                                )
+                                new Error("비밀번호가 일치하지 않습니다!")
                             );
                           },
                         }),
