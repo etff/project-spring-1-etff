@@ -34,6 +34,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
+  private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjE3N" +
+          "jA0OTM3LCJleHAiOjE2MTc2MTU3Mzd9.ddcbDNF2ZCf5RWV3ApI0uRyxsNXQRVZlMs3kB7Kmybg";
+  private static final String INVALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
+          "eyJ1c2VySWQiOjF9.ZZ3CUl0jxeLGvQ1Js5nG2Ty5qGTlqai5ubDMXZOdaD0";
+
   private static Long GIVEN_ID = 1L;
   private static Long NOT_EXISTED_ID = -1L;
   private static String GIVEN_NAME = "user1";
@@ -76,7 +81,9 @@ class MemberControllerTest {
             .perform(
                     post("/api/v1/members")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(registerDto)))
+                            .content(objectMapper.writeValueAsString(registerDto))
+
+            )
             .andExpect(status().isCreated())
             .andExpect(header().exists(HttpHeaders.LOCATION))
             .andExpect(content().string("1"));
@@ -91,7 +98,10 @@ class MemberControllerTest {
             .perform(
                     post("/api/v1/members")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(dto)))
+                            .content(objectMapper.writeValueAsString(dto))
+                            .header("Authorization", "Bearer " + VALID_TOKEN)
+            )
+
             .andExpect(status().isBadRequest());
   }
 
@@ -102,7 +112,9 @@ class MemberControllerTest {
             .perform(
                     patch("/api/v1/members/" + GIVEN_ID)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(updateDto)))
+                            .content(objectMapper.writeValueAsString(updateDto))
+                            .header("Authorization", "Bearer " + VALID_TOKEN)
+            )
             .andExpect(status().isOk());
   }
 
@@ -114,7 +126,9 @@ class MemberControllerTest {
             .perform(
                     patch("/api/v1/members/" + GIVEN_ID)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(dto)))
+                            .content(objectMapper.writeValueAsString(dto))
+                            .header("Authorization", "Bearer " + VALID_TOKEN)
+            )
             .andExpect(status().isBadRequest());
   }
 
@@ -125,7 +139,8 @@ class MemberControllerTest {
             .willReturn(
                     MemberResponse.builder().id(GIVEN_ID).email(GIVEN_EMAIL).name(GIVEN_NAME).build());
     mockMvc
-            .perform(get("/api/v1/members/{id}", 1L))
+            .perform(get("/api/v1/members/{id}", 1L)
+                    .header("Authorization", "Bearer " + VALID_TOKEN))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString(GIVEN_NAME)))
             .andExpect(content().string(containsString(GIVEN_EMAIL)))
@@ -140,13 +155,20 @@ class MemberControllerTest {
   void detailWithNotExistedMember() throws Exception {
     given(memberService.getMember(NOT_EXISTED_ID)).willThrow(MemberNotFoundException.class);
 
-    mockMvc.perform(get("/api/v1/members/{id}", NOT_EXISTED_ID)).andExpect(status().isNotFound());
+    mockMvc.perform(get("/api/v1/members/{id}", NOT_EXISTED_ID)
+            .header("Authorization", "Bearer " + VALID_TOKEN)
+
+    ).andExpect(status().isNotFound());
   }
 
   @DisplayName("등록된 회원 정보를 삭제하기")
   @Test
   void destroyWithExistedId() throws Exception {
-    mockMvc.perform(delete("/api/v1/members/{id}", GIVEN_ID)).andExpect(status().isNoContent());
+    mockMvc.perform(
+            delete("/api/v1/members/{id}", GIVEN_ID)
+                    .header("Authorization", "Bearer " + VALID_TOKEN)
+
+    ).andExpect(status().isNoContent());
 
     verify(memberService).deleteMember(GIVEN_ID);
   }
@@ -159,7 +181,9 @@ class MemberControllerTest {
             .deleteMember(NOT_EXISTED_ID);
 
     mockMvc
-            .perform(delete("/api/v1/members/{id}", NOT_EXISTED_ID))
+            .perform(delete("/api/v1/members/{id}", NOT_EXISTED_ID)
+                    .header("Authorization", "Bearer " + VALID_TOKEN)
+            )
             .andExpect(status().isNotFound());
   }
 }

@@ -16,7 +16,7 @@ import java.net.URI;
 /**
  * 사용자 인증 요청을 처리합니다.
  */
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 @RestController
 @RequiredArgsConstructor
 public class AuthController {

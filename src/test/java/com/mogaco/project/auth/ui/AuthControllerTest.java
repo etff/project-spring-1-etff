@@ -46,7 +46,7 @@ class AuthControllerTest {
 
         mockMvc.perform(
                 RestDocumentationRequestBuilders.
-                        post("/api/v1/auth")
+                        post("/api/auth")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authRequestDto))
         )
@@ -61,7 +61,7 @@ class AuthControllerTest {
                 .willThrow(new LoginFailException(WRONG_EMAIL));
 
         mockMvc.perform(
-                post("/api/v1/auth")
+                post("/api/auth")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authRequestDto))
         )
@@ -75,7 +75,7 @@ class AuthControllerTest {
                 .willThrow(new LoginFailException(GIVEN_EMAIL));
 
         mockMvc.perform(
-                post("/api/v1/auth")
+                post("/api/auth")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authRequestDto))
         )

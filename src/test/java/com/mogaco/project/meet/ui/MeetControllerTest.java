@@ -24,15 +24,20 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MeetControllerTest {
+    private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjE3N" +
+            "jA0OTM3LCJleHAiOjE2MTc2MTU3Mzd9.ddcbDNF2ZCf5RWV3ApI0uRyxsNXQRVZlMs3kB7Kmybg";
+
+    private static final String INVALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
+            "eyJ1c2VySWQiOjF9.ZZ3CUl0jxeLGvQ1Js5nG2Ty5qGTlqai5ubDMXZOdaD0";
 
     @MockBean
     private MeetService meetService;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     private MeetRequestDto requestDto;
 
@@ -59,6 +64,7 @@ class MeetControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(requestDto))
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(header().string("location", "/meets/1"))
                 .andExpect(status().isCreated());
@@ -75,6 +81,7 @@ class MeetControllerTest {
                 post("/api/v1/meets")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(dto))
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(status().isBadRequest());
     }
