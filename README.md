@@ -17,7 +17,7 @@ Mogaco
 ### 용어사전
 [용어사전](https://github.com/CodeSoom/project-spring-1-etff/wiki/%EC%9A%A9%EC%96%B4%EC%82%AC%EC%A0%84)
 
-### 일정관j리
+### 일정관리
 [트렐로](https://trello.com/b/Dslv99ST/mogaco)
 
 ### 테스트
