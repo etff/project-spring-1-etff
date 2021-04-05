@@ -1,6 +1,7 @@
 package com.mogaco.project.member.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mogaco.project.auth.application.AuthenticationGuard;
 import com.mogaco.project.member.application.MemberNotFoundException;
 import com.mogaco.project.member.application.MemberService;
 import com.mogaco.project.member.dto.MemberRegisterDto;
@@ -15,10 +16,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -34,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class MemberControllerTest {
-  private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJtZW1iZXJJZCI6MSwiaWF0IjoxNjE3N" +
-          "jA0OTM3LCJleHAiOjE2MTc2MTU3Mzd9.ddcbDNF2ZCf5RWV3ApI0uRyxsNXQRVZlMs3kB7Kmybg";
+  private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MDk2MjgwMCwiZXh" +
+          "wIjoxNjQwOTYzMTAwfQ.2siRnBJmRU2JXjZY0CkQMgnCHRJN4Dld4_wG6R7T-HQ";
   private static final String INVALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
           "eyJ1c2VySWQiOjF9.ZZ3CUl0jxeLGvQ1Js5nG2Ty5qGTlqai5ubDMXZOdaD0";
 
@@ -55,6 +58,9 @@ class MemberControllerTest {
 
   @Autowired
   private ObjectMapper objectMapper;
+
+  @MockBean(name = "authenticationGuard")
+  private AuthenticationGuard authenticationGuard;
 
   private MemberRegisterDto registerDto;
 
@@ -108,6 +114,9 @@ class MemberControllerTest {
   @DisplayName("유효한 회원 정보 갱신 명세서로 회원 갱신")
   @Test
   void updateUserWithValidAttributes() throws Exception {
+    given(authenticationGuard.checkIdMatch(any(Authentication.class), anyLong()))
+            .willReturn(true);
+
     mockMvc
             .perform(
                     patch("/api/v1/members/" + GIVEN_ID)
@@ -121,6 +130,9 @@ class MemberControllerTest {
   @DisplayName("유효하지 않은 회원 정보 갱신 명세서로 회원 갱신")
   @Test
   void updateUserWithInValidAttributes() throws Exception {
+    given(authenticationGuard.checkIdMatch(any(Authentication.class), anyLong()))
+            .willReturn(true);
+
     MemberRegisterDto dto = new MemberRegisterDto();
     mockMvc
             .perform(
