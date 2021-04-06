@@ -8,6 +8,9 @@ import {
   LOGOUT_FAILURE,
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
+  MEMBER_LOADING_FAILURE,
+  MEMBER_LOADING_REQUEST,
+  MEMBER_LOADING_SUCCESS,
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -84,6 +87,29 @@ const authReducer = (state = initialState, action) => {
         isLoading: false,
         memberRole: null,
         errorMsg: "",
+      };
+    case MEMBER_LOADING_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case MEMBER_LOADING_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        isLoading: false,
+        member: action.payload,
+        memberId: action.payload.id,
+        memberName: action.payload.name,
+        memberRole: "",
+      };
+    case MEMBER_LOADING_FAILURE:
+      return {
+        ...state,
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+        memberRole: "",
       };
 
     case CLEAR_ERROR_REQUEST:
