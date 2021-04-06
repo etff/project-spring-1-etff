@@ -2,7 +2,6 @@ package com.mogaco.project.global.errors;
 
 import com.mogaco.project.auth.application.InvalidTokenException;
 import com.mogaco.project.auth.application.LoginFailException;
-import com.mogaco.project.auth.application.LoginNotFoundException;
 import com.mogaco.project.member.application.MemberNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,12 +27,6 @@ public class ControllerErrorAdvice {
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   @ExceptionHandler(InvalidTokenException.class)
   public void handleInvalidAccessToken() {
-  }
-
-  @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(LoginNotFoundException.class)
-  public ErrorResponse handleLoginNotFound() {
-    return new ErrorResponse("Login user not found");
   }
 
   @ResponseStatus(HttpStatus.BAD_REQUEST)

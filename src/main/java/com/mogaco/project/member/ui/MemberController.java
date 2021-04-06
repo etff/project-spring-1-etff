@@ -1,7 +1,6 @@
 package com.mogaco.project.member.ui;
 
-import com.mogaco.project.auth.application.LoginNotFoundException;
-import com.mogaco.project.global.utils.SecurityUtil;
+import com.mogaco.project.auth.application.AuthenticationService;
 import com.mogaco.project.member.application.MemberService;
 import com.mogaco.project.member.dto.MemberRegisterDto;
 import com.mogaco.project.member.dto.MemberResponse;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,8 +27,10 @@ import java.net.URI;
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
 public class MemberController {
+  private static final String BEARER = "Bearer ";
+
   private final MemberService memberService;
-  private final SecurityUtil securityUtil;
+  private final AuthenticationService authenticationService;
 
   /**
    * 주어진 회원 정보를 등록한다.
@@ -64,14 +66,12 @@ public class MemberController {
     return ResponseEntity.ok().body(memberResponse);
   }
 
-  /**
-   * 로그인한 회원의 정보를 리턴한다.
-   */
   @GetMapping("/me")
-  public ResponseEntity<MemberResponse> getLoginMember() {
-    final Long loginId = securityUtil.getCurrentMemberId()
-            .orElseThrow(LoginNotFoundException::new);
+  public ResponseEntity<MemberResponse> getLoginMember(@RequestHeader("Authorization") String authorization) {
+    final String token = authorization.substring(BEARER.length());
+    final Long loginId = authenticationService.parseToken(token);
     final MemberResponse memberResponse = memberService.getMember(loginId);
+
     return ResponseEntity.ok().body(memberResponse);
   }
 
