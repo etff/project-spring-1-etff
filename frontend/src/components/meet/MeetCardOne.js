@@ -33,4 +33,4 @@ const MeetCardOne = ({meets}) => {
   );
 };
 
-export default PostCardOne;
+export default MeetCardOne;
