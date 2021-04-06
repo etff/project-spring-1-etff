@@ -8,6 +8,10 @@ server:
       charset: UTF-8
       force: true
 
+jwt:
+  secret: ${JWT_SECRET}
+  expire-length: 10800000 # 1000 miliseconds * 60 seconds * 60 minutes * 3 hours:
+
 ---
 
 spring:
