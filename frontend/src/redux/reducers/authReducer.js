@@ -3,7 +3,10 @@ import {
   CLEAR_ERROR_REQUEST,
   CLEAR_ERROR_SUCCESS,
   LOGIN_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
   LOGOUT_FAILURE,
+  LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   REGISTER_FAILURE,
   REGISTER_REQUEST,
@@ -25,6 +28,8 @@ const initialState = {
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOGIN_REQUEST:
+    case LOGOUT_REQUEST:
     case REGISTER_REQUEST:
       return {
         ...state,
@@ -36,6 +41,18 @@ const authReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
         isAuthenticated: null,
+        isLoading: false,
+        memberId: action.payload,
+        memberRole: null,
+        errorMsg: "",
+      };
+
+    case LOGIN_SUCCESS:
+      localStorage.setItem("token", action.payload.accessToken);
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
         isLoading: false,
         memberId: null,
         memberRole: null,

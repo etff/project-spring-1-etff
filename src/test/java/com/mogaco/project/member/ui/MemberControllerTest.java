@@ -87,9 +87,7 @@ class MemberControllerTest {
             .perform(
                     post("/api/v1/members")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(objectMapper.writeValueAsString(registerDto))
-
-            )
+                            .content(objectMapper.writeValueAsString(registerDto)))
             .andExpect(status().isCreated())
             .andExpect(header().exists(HttpHeaders.LOCATION))
             .andExpect(content().string("1"));

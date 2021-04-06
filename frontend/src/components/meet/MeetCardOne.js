@@ -3,8 +3,7 @@ import {Link} from "react-router-dom";
 
 const {Meta} = Card;
 
-const PostCardOne = ({meets}) => {
-  console.log(meets);
+const MeetCardOne = ({meets}) => {
   return (
       <>
         {Array.isArray(meets)
@@ -34,4 +33,4 @@ const PostCardOne = ({meets}) => {
   );
 };
 
-export default PostCardOne;
+export default MeetCardOne;
