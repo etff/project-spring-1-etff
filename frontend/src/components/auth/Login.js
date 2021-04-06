@@ -1,13 +1,33 @@
+import {useEffect, useState} from "react";
 import "antd/dist/antd.css";
 import {Button, Col, Form, Input, Row, Typography} from "antd";
 import {Helmet} from "react-helmet";
 import {Content} from "antd/lib/layout/layout";
 import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
+import {LOGIN_REQUEST} from "../../redux/types";
 
 const {Title} = Typography;
 const Login = () => {
+  const [localMsg, setLocalMsg] = useState("");
+  const dispatch = useDispatch();
+  const {errorMsg} = useSelector((state) => state.auth);
+  useEffect(() => {
+    try {
+      setLocalMsg(errorMsg);
+    } catch (e) {
+      console.log(e);
+    }
+  }, [errorMsg]);
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const {email, password} = values;
+    const member = {email, password};
+
+    dispatch({
+      type: LOGIN_REQUEST,
+      payload: member,
+    });
   };
 
   return (
@@ -36,7 +56,7 @@ const Login = () => {
                         {
                           required: true,
                           type: "email",
-                          message: "Please input your Email!",
+                          message: "이메일을 입력해주세요!",
                         },
                       ]}
                   >
@@ -50,7 +70,7 @@ const Login = () => {
                       rules={[
                         {
                           required: true,
-                          message: "Please input your Password!",
+                          message: "비밀번호를 입력해주세요!",
                         },
                       ]}
                   >

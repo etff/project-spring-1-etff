@@ -21,7 +21,6 @@ const Join = () => {
   const onFinish = (values) => {
     const {name, email, password} = values;
     const newMember = {name, email, password};
-    console.log(newMember, "newMember");
     dispatch({
       type: REGISTER_REQUEST,
       payload: newMember,
