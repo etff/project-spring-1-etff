@@ -27,6 +27,8 @@ import java.net.URI;
 @RequestMapping("/api/v1/members")
 @RequiredArgsConstructor
 public class MemberController {
+  private static final String BEARER = "Bearer ";
+
   private final MemberService memberService;
   private final AuthenticationService authenticationService;
 
@@ -65,7 +67,8 @@ public class MemberController {
   }
 
   @GetMapping("/me")
-  public ResponseEntity<MemberResponse> getLoginMember(@RequestHeader("token") String token) {
+  public ResponseEntity<MemberResponse> getLoginMember(@RequestHeader("Authorization") String authorization) {
+    final String token = authorization.substring(BEARER.length());
     final Long loginId = authenticationService.parseToken(token);
     final MemberResponse memberResponse = memberService.getMember(loginId);
 

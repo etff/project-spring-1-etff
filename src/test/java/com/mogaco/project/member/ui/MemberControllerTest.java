@@ -2,6 +2,7 @@ package com.mogaco.project.member.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mogaco.project.auth.application.AuthenticationGuard;
+import com.mogaco.project.auth.application.AuthenticationService;
 import com.mogaco.project.member.application.MemberNotFoundException;
 import com.mogaco.project.member.application.MemberService;
 import com.mogaco.project.member.dto.MemberRegisterDto;
@@ -52,6 +53,9 @@ class MemberControllerTest {
 
   @MockBean
   private MemberService memberService;
+
+  @MockBean
+  private AuthenticationService authenticationService;
 
   @Autowired
   private MockMvc mockMvc;
@@ -140,6 +144,26 @@ class MemberControllerTest {
                             .header("Authorization", "Bearer " + VALID_TOKEN)
             )
             .andExpect(status().isBadRequest());
+  }
+
+  @DisplayName("로그인한 회원 정보 가져오기")
+  @Test
+  void detailWithLoginMember() throws Exception {
+    given(memberService.getMember(GIVEN_ID))
+            .willReturn(
+                    MemberResponse.builder().id(GIVEN_ID).email(GIVEN_EMAIL).name(GIVEN_NAME).build());
+    given(authenticationService.parseToken(VALID_TOKEN)).willReturn(GIVEN_ID);
+
+    mockMvc
+            .perform(get("/api/v1/members/me")
+                    .header("Authorization", "Bearer " + VALID_TOKEN))
+            .andExpect(status().isOk())
+            .andExpect(content().string(containsString(GIVEN_NAME)))
+            .andExpect(content().string(containsString(GIVEN_EMAIL)))
+            .andExpect(jsonPath("id").exists())
+            .andExpect(jsonPath("name").exists())
+            .andExpect(jsonPath("email").exists())
+            .andExpect(content().string(containsString(GIVEN_NAME)));
   }
 
   @DisplayName("등록된 회원 정보 가져오기")
