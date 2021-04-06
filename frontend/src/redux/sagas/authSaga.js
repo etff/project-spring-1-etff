@@ -5,6 +5,12 @@ import {
   CLEAR_ERROR_FAILURE,
   CLEAR_ERROR_REQUEST,
   CLEAR_ERROR_SUCCESS,
+  LOGIN_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGOUT_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
   MEMBER_LOADING_FAILURE,
   MEMBER_LOADING_REQUEST,
   MEMBER_LOADING_SUCCESS,
@@ -15,15 +21,12 @@ import {
 
 // Register
 const registerMemberAPI = (req) => {
-  console.log(req, "req");
-
   return axios.post("api/v1/members", req);
 };
 
 function* registerMember(action) {
   try {
     const result = yield call(registerMemberAPI, action.payload);
-    console.log(result, "RegisterMember Data");
     yield put({
       type: REGISTER_SUCCESS,
       payload: result.data,
@@ -95,10 +98,68 @@ function* watchMemberLoading() {
   yield takeEvery(MEMBER_LOADING_REQUEST, memberLoading);
 }
 
+// Login
+
+const loginMemberAPI = (loginData) => {
+  console.log(loginData, "loginData");
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return axios.post("api/auth", loginData, config);
+};
+
+function* loginMember(action) {
+  try {
+    const result = yield call(loginMemberAPI, action.payload);
+    console.log(result);
+    yield put({
+      type: LOGIN_SUCCESS,
+      payload: result.data,
+    });
+    yield put(push("/"));
+  } catch (e) {
+    yield put({
+      type: LOGIN_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchLoginMember() {
+  yield takeEvery(LOGIN_REQUEST, loginMember);
+}
+
+// LOGOUT
+
+function* logout(action) {
+  try {
+    yield put({
+      type: LOGOUT_SUCCESS,
+    });
+  } catch (e) {
+    yield put({
+      type: LOGOUT_FAILURE,
+    });
+    console.log(e);
+  }
+}
+
+function* watchLogout() {
+  yield takeEvery(LOGOUT_REQUEST, logout);
+}
+
 export default function* authSaga() {
   yield all([
     fork(watchRegisterMember),
     fork(watchMemberLoading),
+    fork(watchClearError),
+  ]);
+  yield all([
+    fork(watchLoginMember),
+    fork(watchLogout),
+    fork(watchRegisterMember),
     fork(watchClearError),
   ]);
 }
