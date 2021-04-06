@@ -3,6 +3,8 @@ package com.mogaco.project.member.application;
 import com.mogaco.project.global.utils.CustomPasswordEncoder;
 import com.mogaco.project.member.domain.Member;
 import com.mogaco.project.member.domain.MemberRepository;
+import com.mogaco.project.member.domain.Role;
+import com.mogaco.project.member.domain.RoleRepository;
 import com.mogaco.project.member.dto.MemberRegisterDto;
 import com.mogaco.project.member.dto.MemberResponse;
 import com.mogaco.project.member.dto.MemberUpdateDto;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class MemberService {
   private final MemberRepository memberRepository;
+  private final RoleRepository roleRepository;
   private final CustomPasswordEncoder passwordEncoder;
 
   /**
@@ -36,6 +39,7 @@ public class MemberService {
     final String encodedPassword = passwordEncoder.getEncodedPassword(dto);
     final Member member = Member.of(dto.getName(), dto.getEmail(), encodedPassword);
     final Member saved = memberRepository.save(member);
+    roleRepository.save(new Role(saved.getId(), "USER"));
 
     return saved.getId();
   }
