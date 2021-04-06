@@ -75,7 +75,7 @@ const memberLoadingAPI = (token) => {
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;
   }
-  return axios.get("api/v1/members/me", config);
+  return axios.get("/api/v1/members/me", config);
 };
 
 function* memberLoading(action) {
@@ -155,8 +155,6 @@ export default function* authSaga() {
     fork(watchRegisterMember),
     fork(watchMemberLoading),
     fork(watchClearError),
-  ]);
-  yield all([
     fork(watchLoginMember),
     fork(watchLogout),
     fork(watchRegisterMember),
