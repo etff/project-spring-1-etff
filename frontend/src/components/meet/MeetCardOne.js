@@ -14,16 +14,16 @@ const MeetCardOne = ({meets}) => {
                                 <Card
                                     cover={
                                         <img
-                                alt="example"
-                                src="https://cdn.pixabay.com/photo/2021/03/18/19/56/keyboard-6105750__340.jpg"
-                            />
-                          }
-                      >
-                        {startedAt}
-                        <br/>
-                        <h2>{title} </h2>
-                        {location} {time}
-                      </Card>
+                                            alt="example"
+                                            src="https://cdn.pixabay.com/photo/2021/03/18/19/56/keyboard-6105750__340.jpg"
+                                        />
+                                    }
+                                >
+                                    {startedAt}
+                                    <br/>
+                                    <h2>{title} </h2>
+                                    {location} {time}
+                                </Card>
                     </Link>
                   </Col>
               );
