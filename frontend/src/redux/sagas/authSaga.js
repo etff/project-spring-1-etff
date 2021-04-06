@@ -65,6 +65,8 @@ function* watchClearError() {
 // Member Loading
 
 const memberLoadingAPI = (token) => {
+  console.log(token);
+
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -78,6 +80,7 @@ const memberLoadingAPI = (token) => {
 
 function* memberLoading(action) {
   try {
+    console.log(action, "memberLoading");
     const result = yield call(memberLoadingAPI, action.payload);
     yield put({
       type: MEMBER_LOADING_SUCCESS,
