@@ -151,14 +151,8 @@ class MemberControllerTest {
   void detailWithLoginMember() throws Exception {
     given(memberService.getMember(GIVEN_ID))
             .willReturn(
-                    MemberResponse.builder()
-                            .id(GIVEN_ID)
-                            .email(GIVEN_EMAIL)
-                            .name(GIVEN_NAME)
-                            .build()
-            );
-    given(authenticationService.parseToken(VALID_TOKEN))
-            .willReturn(GIVEN_ID);
+                    MemberResponse.builder().id(GIVEN_ID).email(GIVEN_EMAIL).name(GIVEN_NAME).build());
+    given(authenticationService.parseToken(VALID_TOKEN)).willReturn(GIVEN_ID);
 
     mockMvc
             .perform(get("/api/v1/members/me")
