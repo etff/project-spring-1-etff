@@ -5,6 +5,9 @@ import {
   CLEAR_ERROR_FAILURE,
   CLEAR_ERROR_REQUEST,
   CLEAR_ERROR_SUCCESS,
+  MEMBER_LOADING_FAILURE,
+  MEMBER_LOADING_REQUEST,
+  MEMBER_LOADING_SUCCESS,
   REGISTER_FAILURE,
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -56,6 +59,46 @@ function* watchClearError() {
   yield takeEvery(CLEAR_ERROR_REQUEST, clearError);
 }
 
+// Member Loading
+
+const memberLoadingAPI = (token) => {
+  console.log(token);
+
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  if (token) {
+    config.headers["Authorization"] = "Bearer " + token;
+  }
+  return axios.get("api/v1/members/me", config);
+};
+
+function* memberLoading(action) {
+  try {
+    console.log(action, "memberLoading");
+    const result = yield call(memberLoadingAPI, action.payload);
+    yield put({
+      type: MEMBER_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: MEMBER_LOADING_FAILURE,
+      payload: e.response,
+    });
+  }
+}
+
+function* watchMemberLoading() {
+  yield takeEvery(MEMBER_LOADING_REQUEST, memberLoading);
+}
+
 export default function* authSaga() {
-  yield all([fork(watchRegisterMember), fork(watchClearError)]);
+  yield all([
+    fork(watchRegisterMember),
+    fork(watchMemberLoading),
+    fork(watchClearError),
+  ]);
 }
