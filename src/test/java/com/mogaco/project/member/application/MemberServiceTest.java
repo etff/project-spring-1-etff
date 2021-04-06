@@ -3,6 +3,7 @@ package com.mogaco.project.member.application;
 import com.mogaco.project.global.utils.CustomPasswordEncoder;
 import com.mogaco.project.member.domain.Member;
 import com.mogaco.project.member.domain.MemberRepository;
+import com.mogaco.project.member.domain.RoleRepository;
 import com.mogaco.project.member.dto.MemberRegisterDto;
 import com.mogaco.project.member.dto.MemberResponse;
 import com.mogaco.project.member.dto.MemberUpdateDto;
@@ -34,10 +35,11 @@ class MemberServiceTest {
   private MemberService memberService;
 
   private MemberRepository memberRepository = mock(MemberRepository.class);
+  private RoleRepository roleRepository = mock(RoleRepository.class);
 
   @BeforeEach
   void setUp() {
-    memberService = new MemberService(memberRepository, passwordEncoder);
+    memberService = new MemberService(memberRepository, roleRepository, passwordEncoder);
   }
 
   @Nested
