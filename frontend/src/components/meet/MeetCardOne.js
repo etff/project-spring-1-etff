@@ -10,7 +10,7 @@ const MeetCardOne = ({meets}) => {
             ? meets.map(({meetId, title, location, time, startedAt}) => {
               return (
                   <Col span={6} key={meetId}>
-                    <Link to={`/meets/${meetId}`}>
+                    <Link to={`/meet/${meetId}`}>
                       <Card
                           cover={
                             <img
