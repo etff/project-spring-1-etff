@@ -131,11 +131,7 @@ const Join = () => {
                   </Form.Item>
 
                   <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
-                    <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="login-form-button"
-                    >
+                    <Button type="primary" htmlType="submit" block>
                       확인
                     </Button>
                   </Form.Item>
