@@ -65,8 +65,6 @@ function* watchClearError() {
 // Member Loading
 
 const memberLoadingAPI = (token) => {
-  console.log(token);
-
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -80,7 +78,6 @@ const memberLoadingAPI = (token) => {
 
 function* memberLoading(action) {
   try {
-    console.log(action, "memberLoading");
     const result = yield call(memberLoadingAPI, action.payload);
     yield put({
       type: MEMBER_LOADING_SUCCESS,
@@ -99,9 +96,7 @@ function* watchMemberLoading() {
 }
 
 // Login
-
 const loginMemberAPI = (loginData) => {
-  console.log(loginData, "loginData");
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -113,7 +108,6 @@ const loginMemberAPI = (loginData) => {
 function* loginMember(action) {
   try {
     const result = yield call(loginMemberAPI, action.payload);
-    console.log(result);
     yield put({
       type: LOGIN_SUCCESS,
       payload: result.data,

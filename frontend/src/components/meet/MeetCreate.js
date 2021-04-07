@@ -1,9 +1,10 @@
 import "antd/dist/antd.css";
-import {Button, Carousel, Col, DatePicker, Form, Input, InputNumber, Row, TimePicker, Typography,} from "antd";
+import {Button, Carousel, Col, DatePicker, Form, Input, InputNumber, Row, Typography,} from "antd";
 import {Content} from "antd/lib/layout/layout";
 import {useDispatch} from "react-redux";
+import {SearchOutlined} from "@ant-design/icons";
 import {Helmet} from "react-helmet";
-import moment from "moment";
+import {MEET_CREATE_REQUEST} from "../../redux/types";
 
 const {Title} = Typography;
 const {TextArea} = Input;
@@ -28,26 +29,37 @@ const contentStyle = {
 const MeetCreate = () => {
   const dispatch = useDispatch();
 
-  function onChange(a, b, c) {
-    console.log(a, b, c);
-  }
-
   const onFinish = (values) => {
-    const {name, email, password} = values;
-    const newMember = {name, email, password};
-  };
+    const {
+      startedAt,
+      time,
+      location,
+      count,
+      title,
+      message,
+      subject,
+    } = values;
+    const token = localStorage.getItem("token");
 
-  const format = "HH:mm";
+    const createMeeting = {
+      startedAt,
+      time,
+      location,
+      count,
+      title,
+      message,
+      subject,
+      token,
+    };
+
+    dispatch({
+      type: MEET_CREATE_REQUEST,
+      payload: createMeeting,
+    });
+  };
 
   const validateMessages = {
     required: "${label} is required!",
-    types: {
-      email: "${label} is not a valid email!",
-      password: "${label} is not a valid password!",
-    },
-    password: {
-      range: "${label} must be between ${min} and ${max}",
-    },
   };
 
   return (
@@ -63,9 +75,6 @@ const MeetCreate = () => {
             </div>
             <div>
               <h3 style={contentStyle}>친구들을 모아요</h3>
-            </div>
-            <div>
-              <h3 style={contentStyle}>모각코!</h3>
             </div>
             <div>
               <h3 style={contentStyle}>모각코!</h3>
@@ -113,11 +122,7 @@ const MeetCreate = () => {
                           },
                         ]}
                     >
-                      <TimePicker
-                          defaultValue={moment("00:00", format)}
-                          format={format}
-                          className="login-form-button"
-                      />
+                      <Input placeholder="ex) 00:00 ~ 14:00"/>
                     </Form.Item>
                     <Form.Item
                         name="location"
@@ -129,7 +134,10 @@ const MeetCreate = () => {
                           },
                         ]}
                     >
-                      <Input/>
+                      <Input
+                          prefix={<SearchOutlined/>}
+                          placeholder="위치 / 상세주소로 입력하세요 예) 홍대 / 스타벅스"
+                      />
                     </Form.Item>
                     <Form.Item
                         name="count"
@@ -156,12 +164,21 @@ const MeetCreate = () => {
                     >
                       <Input/>
                     </Form.Item>
-                    <Form.Item name="message" label="메시지">
+                    <Form.Item
+                        name="message"
+                        label="메시지"
+                        rules={[
+                          {
+                            required: true,
+                            message: "본문을 입력해주세요!",
+                          },
+                        ]}
+                    >
                       <TextArea/>
                     </Form.Item>
 
                     <Form.Item name="subject" label="나의 주제">
-                      <Input/>
+                      <Input placeholder="모각코에서 공부할 주제를 입력하세요"/>
                     </Form.Item>
 
                     <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>

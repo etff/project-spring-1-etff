@@ -57,9 +57,9 @@ const Main = () => {
                         </Row>
                     </div>
                 </div>
-      </Content>
-    </>
-  );
+            </Content>
+        </>
+    );
 };
 
 export default Main;
