@@ -51,11 +51,9 @@ const Main = () => {
                     className="site-layout-background"
                     style={{padding: 24, minHeight: 380}}
                 >
-                    <div className="site-card-wrapper">
-                        <Row gutter={16}>
-                            {meets ? <MeetCardOne meets={meets}/> : GrowingSpinner}
-                        </Row>
-                    </div>
+                    <Row gutter={16}>
+                        {meets ? <MeetCardOne meets={meets}/> : GrowingSpinner}
+                    </Row>
                 </div>
             </Content>
         </>
