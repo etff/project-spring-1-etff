@@ -1,5 +1,6 @@
 package com.mogaco.project.meet.dto;
 
+import com.mogaco.project.meet.domain.MeetStatus;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,13 +32,16 @@ public class MainResponseDto {
      */
     private String time;
 
+    private MeetStatus status;
+
     @Builder
     @QueryProjection
-    public MainResponseDto(Long meetId, LocalDate startedAt, String title, String location, String time) {
+    public MainResponseDto(Long meetId, LocalDate startedAt, String title, String location, String time, MeetStatus status) {
         this.meetId = meetId;
         this.startedAt = startedAt;
         this.title = title;
         this.location = location;
         this.time = time;
+        this.status = status;
     }
 }

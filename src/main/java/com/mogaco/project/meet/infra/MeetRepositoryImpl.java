@@ -26,7 +26,8 @@ public class MeetRepositoryImpl implements MeetRepositoryCustom {
                         meet.meetTime.startedAt,
                         meet.message.title,
                         meet.location.location,
-                        meet.meetTime.time
+                        meet.meetTime.time,
+                        meet.meetStatus
                 ))
                 .from(meet)
                 .offset(pageable.getOffset())
