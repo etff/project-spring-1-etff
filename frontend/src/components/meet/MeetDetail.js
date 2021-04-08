@@ -1,30 +1,17 @@
-import {Avatar, Button, Card, Col, Divider, Image, Layout, Row, Space, Typography,} from "antd";
+import React, {useEffect} from "react";
+import {Avatar, Button, Card, Col, Divider, Layout, Row, Space, Typography,} from "antd";
 import {UserOutlined} from "@ant-design/icons";
+import {useDispatch, useSelector} from "react-redux";
 import {Helmet} from "react-helmet";
 import "antd/dist/antd.css";
+import {MEET_DETAIL_LOADING_REQUEST, MEMBER_LOADING_REQUEST,} from "../../redux/types";
+import MeetInfo from "./MeetInfo";
+import MeetJoin from "./MeetJoin";
+import MeetAttendee from "./MeetAttendee";
 
 const {Content} = Layout;
 const {Title} = Typography;
 const {Meta} = Card;
-
-const MeetingInfo = (
-    <>
-      <Row>
-        <Col span={12}>
-          <Image src="https://cdn.pixabay.com/photo/2021/02/06/07/02/laptop-5987093_960_720.jpg"/>
-        </Col>
-        <Col span={11} push={1}>
-          <Title>같이 모각코 하실래요?</Title>
-          <h2>2021. 04. 03 14:00 ~ 18:00</h2>
-          <h2>리더 : John</h2>
-          <h2>
-            <a href="#">홍대</a>
-          </h2>
-          <h2>문의하기</h2>
-        </Col>
-      </Row>
-    </>
-);
 
 const MeetingJoin = (
     <>
@@ -74,11 +61,26 @@ const Attendee = (
     </>
 );
 
-const MeetDetail = () => {
+const MeetDetail = (req) => {
+  const dispatch = useDispatch();
+  const {memberId, memberName} = useSelector((state) => state.auth);
+
+  const {meetDetail, title, loading} = useSelector((state) => state.meet);
+
+  useEffect(() => {
+    dispatch({
+      type: MEET_DETAIL_LOADING_REQUEST,
+      payload: req.match.params.id,
+    });
+    dispatch({
+      type: MEMBER_LOADING_REQUEST,
+      payload: localStorage.getItem("token"),
+    });
+  }, [dispatch, req.match.params.id]);
+
   return (
       <>
         <Helmet title="Details"/>
-
         <Content
             className="site-layout"
             style={{padding: "0 200px", marginTop: 30}}
@@ -87,11 +89,17 @@ const MeetDetail = () => {
               className="site-layout-background"
               style={{padding: 24, minHeight: 380}}
           >
-            {MeetingInfo}
-            <Divider/>
-            {MeetingJoin}
-            <Divider/>
-            {Attendee}
+            {meetDetail && meetDetail.studies ? (
+                <>
+                  <MeetInfo meetDetail={meetDetail}/>
+                  <Divider/>
+                  <MeetJoin meetDetail={meetDetail} memberId={memberId}/>
+                  <Divider/>
+                  <MeetAttendee meetDetail={meetDetail}/>
+                </>
+            ) : (
+                <h1>no data</h1>
+            )}
           </div>
         </Content>
       </>

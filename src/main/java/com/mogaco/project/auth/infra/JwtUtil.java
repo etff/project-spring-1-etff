@@ -77,9 +77,6 @@ public class JwtUtil {
    */
   public boolean validateToken(String token) {
     Claims claims = this.decode(token);
-    if (claims.getExpiration().before(new Date())) {
-      return false;
-    }
-    return true;
+    return !claims.getExpiration().before(new Date());
   }
 }
