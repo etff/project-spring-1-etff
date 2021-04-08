@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +19,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO : 리더, 이미지 컬럼 추가
+// TODO : 이미지 컬럼 추가
 
 /**
  * 모임.
@@ -63,14 +65,21 @@ public class Meet extends BaseEntity {
     @OneToMany(mappedBy = "meet", cascade = CascadeType.ALL)
     private List<Study> studies = new ArrayList<>();
 
+    /**
+     * 모임개최 상태.
+     */
+    @Enumerated(EnumType.STRING)
+    private MeetStatus meetStatus;
+
     @Builder
-    public Meet(Long id, MeetTime meetTime, int count, Location location, Message message, List<Study> studies) {
+    public Meet(Long id, MeetTime meetTime, int count, Location location, Message message, List<Study> studies, MeetStatus meetStatus) {
         this.id = id;
         this.meetTime = meetTime;
         this.count = count;
         this.location = location;
         this.message = message;
         this.studies = studies;
+        this.meetStatus = meetStatus;
     }
 
     public static Meet of(MeetTime meetTime, int count, Location location, Message message, Study study) {
@@ -80,6 +89,7 @@ public class Meet extends BaseEntity {
                 .message(message)
                 .studies(new ArrayList<>())
                 .location(location)
+                .meetStatus(MeetStatus.OPEN)
                 .build();
 
         // 최초 생성시, 본인 공부 설정

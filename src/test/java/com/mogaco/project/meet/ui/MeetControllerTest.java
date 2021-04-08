@@ -1,7 +1,11 @@
 package com.mogaco.project.meet.ui;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mogaco.project.global.utils.SecurityUtil;
 import com.mogaco.project.meet.application.MeetService;
+import com.mogaco.project.meet.domain.MeetStatus;
+import com.mogaco.project.meet.dto.MainResponseDto;
+import com.mogaco.project.meet.dto.MeetDetailResponseDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,15 +13,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,6 +43,11 @@ class MeetControllerTest {
 
     private static final String INVALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9." +
             "eyJ1c2VySWQiOjF9.ZZ3CUl0jxeLGvQ1Js5nG2Ty5qGTlqai5ubDMXZOdaD0";
+    public static final String GIVEN_TITLE = "mogaco";
+    public static final long GIVEN_ID = 1L;
+    public static final String GIVEN_LOCATION = "HONGDAE";
+    public static final LocalDate GIVEN_START_DAY = LocalDate.of(2021, 4, 1);
+    public static final String GIVEN_START_TIME = "10:00~14:00";
 
     @MockBean
     private MeetService meetService;
@@ -38,6 +57,9 @@ class MeetControllerTest {
 
     @Autowired
     private ObjectMapper mapper;
+
+    @MockBean
+    private SecurityUtil securityUtil;
 
     private MeetRequestDto requestDto;
 
@@ -52,9 +74,23 @@ class MeetControllerTest {
                 .subject("DevOps")
                 .startedAt(LocalDate.of(2021, 4, 1))
                 .build();
+        given(securityUtil.getCurrentMemberId()).willReturn(Optional.of(1L));
 
-        given(meetService.createMeeting(any(MeetRequestDto.class)))
+        given(meetService.createMeeting(any(MeetRequestDto.class), anyLong()))
                 .willReturn(1L);
+
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        List<MainResponseDto> result = List.of(MainResponseDto.builder()
+                .title(GIVEN_TITLE)
+                .meetId(GIVEN_ID)
+                .location(GIVEN_LOCATION)
+                .startedAt(GIVEN_START_DAY)
+                .time(GIVEN_START_TIME)
+                .status(MeetStatus.OPEN)
+                .build());
+
+        Page<MainResponseDto> page = new PageImpl<>(result, pageRequest, result.size());
+        given(meetService.getMeetingsByPageRequest(any(PageRequest.class))).willReturn(page);
     }
 
     @Test
@@ -69,7 +105,7 @@ class MeetControllerTest {
                 .andExpect(header().string("location", "/meets/1"))
                 .andExpect(status().isCreated());
 
-        verify(meetService).createMeeting(any(MeetRequestDto.class));
+        verify(meetService).createMeeting(any(MeetRequestDto.class), anyLong());
     }
 
     @Test
@@ -84,5 +120,37 @@ class MeetControllerTest {
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void list() throws Exception {
+        mockMvc.perform(
+                get("/api/v1/meets")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(GIVEN_TITLE)))
+                .andExpect(content().string(containsString(GIVEN_LOCATION)));
+    }
+
+    @Test
+    void getMeeting() throws Exception {
+        MeetDetailResponseDto responseDto = MeetDetailResponseDto.builder()
+                .meetId(GIVEN_ID)
+                .startedAt(GIVEN_START_DAY)
+                .title(GIVEN_TITLE)
+                .location(GIVEN_LOCATION)
+                .time(GIVEN_START_TIME)
+                .studies(new ArrayList())
+                .build();
+
+        given(meetService.getMeeting(anyLong()))
+                .willReturn(responseDto);
+
+        mockMvc.perform(
+                get("/api/v1/meets/{id}", GIVEN_ID)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(GIVEN_TITLE)))
+                .andExpect(content().string(containsString(GIVEN_LOCATION)));
     }
 }
