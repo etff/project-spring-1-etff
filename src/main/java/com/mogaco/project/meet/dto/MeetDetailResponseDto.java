@@ -29,6 +29,12 @@ public class MeetDetailResponseDto {
      * 제목.
      */
     private String title;
+
+    /**
+     * 모집 본문 내용.
+     */
+    private String message;
+
     /**
      * 장소.
      */
@@ -39,18 +45,25 @@ public class MeetDetailResponseDto {
     private String time;
 
     /**
+     * 인원수.
+     */
+    private int count;
+
+    /**
      * 공부 주제.
      */
     List<StudyDto> studies = new ArrayList<>();
 
     @Builder
-    public MeetDetailResponseDto(Long meetId, LocalDate startedAt, String title, String location, String time, List studies) {
+    public MeetDetailResponseDto(Long meetId, LocalDate startedAt, String title, String location, String time, List<StudyDto> studies, int count, String message) {
         this.meetId = meetId;
         this.startedAt = startedAt;
         this.title = title;
         this.location = location;
         this.time = time;
         this.studies = studies;
+        this.count = count;
+        this.message = message;
     }
 
     public MeetDetailResponseDto(Meet meet) {
@@ -59,6 +72,8 @@ public class MeetDetailResponseDto {
         this.title = meet.getMessage().getTitle();
         this.location = meet.getLocation().getLocation();
         this.time = meet.getMeetTime().getTime();
+        this.count = meet.getCount();
+        this.message = meet.getMessage().getMessage();
         this.studies = meet.getStudies()
                 .stream()
                 .map(StudyDto::new)
