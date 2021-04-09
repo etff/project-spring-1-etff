@@ -40,7 +40,7 @@ public class Meet extends BaseEntity {
      * 시간.
      */
     @Embedded
-    MeetTime meetTime;
+    private MeetTime meetTime;
 
     /**
      * 인원.

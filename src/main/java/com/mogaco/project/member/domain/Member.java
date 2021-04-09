@@ -50,7 +50,7 @@ public class Member {
     private boolean deleted;
 
     @OneToMany(mappedBy = "member")
-    List<Study> studies = new ArrayList<>();
+    private List<Study> studies = new ArrayList<>();
 
     @Builder
     public Member(Long id, String email, String name, String password, boolean deleted, List<Study> studies) {
