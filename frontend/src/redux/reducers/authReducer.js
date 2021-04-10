@@ -57,7 +57,6 @@ const authReducer = (state = initialState, action) => {
         ...action.payload,
         isAuthenticated: true,
         isLoading: false,
-        memberId: null,
         memberRole: null,
         errorMsg: "",
       };

@@ -3,6 +3,9 @@ import {all, call, fork, put, takeEvery} from "redux-saga/effects";
 import {
   MEET_CREATE_FAILURE,
   MEET_CREATE_REQUEST,
+  MEET_DETAIL_LOADING_FAILURE,
+  MEET_DETAIL_LOADING_REQUEST,
+  MEET_DETAIL_LOADING_SUCCESS,
   MEET_LOADING_FAILURE,
   MEET_LOADING_REQUEST,
   MEET_LOADING_SUCCESS,
@@ -69,6 +72,37 @@ function* watchCreateMeets() {
   yield takeEvery(MEET_CREATE_REQUEST, createMeets);
 }
 
+// Meet Detail
+const loadMeetDetailAPI = (payload) => {
+  return axios.get(`/api/v1/meets/${payload}`);
+};
+
+function* loadMeetDetail(action) {
+  try {
+    console.log(action);
+    const result = yield call(loadMeetDetailAPI, action.payload);
+    console.log(result, "meet_detail_saga_data");
+    yield put({
+      type: MEET_DETAIL_LOADING_SUCCESS,
+      payload: result.data,
+    });
+  } catch (e) {
+    yield put({
+      type: MEET_DETAIL_LOADING_FAILURE,
+      payload: e,
+    });
+    console.log(e);
+  }
+}
+
+function* watchLoadMeetDetail() {
+  yield takeEvery(MEET_DETAIL_LOADING_REQUEST, loadMeetDetail);
+}
+
 export default function* meetSaga() {
-  yield all([fork(watchLoadMeets), fork(watchCreateMeets)]);
+  yield all([
+    fork(watchLoadMeets),
+    fork(watchCreateMeets),
+    fork(watchLoadMeetDetail),
+  ]);
 }

@@ -2,6 +2,9 @@ import {
   CLEAR_ERROR_FAILURE,
   CLEAR_ERROR_REQUEST,
   CLEAR_ERROR_SUCCESS,
+  MEET_DETAIL_LOADING_FAILURE,
+  MEET_DETAIL_LOADING_REQUEST,
+  MEET_DETAIL_LOADING_SUCCESS,
   MEET_LOADING_FAILURE,
   MEET_LOADING_REQUEST,
   MEET_LOADING_SUCCESS,
@@ -10,7 +13,7 @@ import {
 const initialState = {
   isAuthenticated: null,
   meets: [],
-  meetDetail: "",
+  meetDetail: null,
   meetCount: "",
   loading: false,
   error: "",
@@ -39,6 +42,27 @@ export default function (state = initialState, action) {
     case MEET_LOADING_FAILURE:
       return {
         ...state,
+        loading: false,
+      };
+
+    case MEET_DETAIL_LOADING_REQUEST:
+      return {
+        ...state,
+        meets: [],
+        loading: true,
+      };
+    case MEET_DETAIL_LOADING_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        meetDetail: action.payload,
+        title: action.payload.title,
+      };
+
+    case MEET_DETAIL_LOADING_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
         loading: false,
       };
 

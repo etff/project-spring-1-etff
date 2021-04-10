@@ -38,17 +38,20 @@ const NavBar = () => {
                     <Button type="dashed">LOGOUT</Button>
                   </Link>
               )}
-              <Link to="/join">
-                <Button type="dashed">JOIN</Button>
-              </Link>
-              <Link>
-                <Avatar
-                    style={{
-                      backgroundColor: "#87d068",
-                    }}
-                    icon={<UserOutlined/>}
-                />
-              </Link>
+              {!isAuthenticated ? (
+                  <Link to="/join">
+                    <Button type="dashed">JOIN</Button>
+                  </Link>
+              ) : (
+                  <Link onClick={onLogout} to="#">
+                    <Avatar
+                        style={{
+                          backgroundColor: "#87d068",
+                        }}
+                        icon={<UserOutlined/>}
+                    />
+                  </Link>
+              )}
             </Space>
           </Col>
         </Row>
