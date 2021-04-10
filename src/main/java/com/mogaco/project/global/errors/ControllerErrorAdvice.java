@@ -15,27 +15,29 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ControllerErrorAdvice {
 
-  @ResponseStatus(HttpStatus.BAD_REQUEST)
-  @ExceptionHandler(IllegalArgumentException.class)
-  public void handleIllegalArgument() {
-  }
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ErrorResponse handleIllegalArgument() {
+        return new ErrorResponse("Illegal Argument");
+    }
 
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  @ExceptionHandler(MemberNotFoundException.class)
-  public ErrorResponse handleMemberNotFound() {
-    return new ErrorResponse("Member not found");
-  }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ErrorResponse handleMemberNotFound() {
+        return new ErrorResponse("Member not found");
+    }
 
-  @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(InvalidTokenException.class)
-  public void handleInvalidAccessToken() {
-  }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InvalidTokenException.class)
+    public ErrorResponse handleInvalidAccessToken() {
+        return new ErrorResponse("Token Invalid");
+    }
 
-  @ResponseStatus(HttpStatus.UNAUTHORIZED)
-  @ExceptionHandler(LoginNotFoundException.class)
-  public ErrorResponse handleLoginNotFound() {
-      return new ErrorResponse("Login user not found");
-  }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(LoginNotFoundException.class)
+    public ErrorResponse handleLoginNotFound() {
+        return new ErrorResponse("Login user not found");
+    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(LoginFailException.class)
