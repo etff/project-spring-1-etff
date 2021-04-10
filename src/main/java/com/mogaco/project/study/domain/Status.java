@@ -1,8 +1,19 @@
 package com.mogaco.project.study.domain;
 
 /**
- * 모임 신청 상태 (REQUEST: 신청, APPROVED: 승인, REJECT: 거부).
+ * 모임 신청 상태.
  */
 public enum Status {
-    REQUEST, APPROVED, REJECT
+    /**
+     * 신청
+     */
+    REQUEST,
+    /**
+     * 승인
+     */
+    APPROVED,
+    /**
+     * 거부
+     */
+    REJECT
 }
