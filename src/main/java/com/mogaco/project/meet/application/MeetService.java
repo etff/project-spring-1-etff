@@ -1,5 +1,6 @@
 package com.mogaco.project.meet.application;
 
+import com.mogaco.project.auth.application.LoginNotFoundException;
 import com.mogaco.project.meet.domain.Location;
 import com.mogaco.project.meet.domain.Meet;
 import com.mogaco.project.meet.domain.MeetSupplier;
@@ -46,7 +47,8 @@ public class MeetService {
             throw new IllegalArgumentException();
         }
         final Location location = locationConverter.getLocation(dto);
-        final Member member = memberRepository.findById(loginMemberId).get();
+        final Member member = memberRepository.findById(loginMemberId)
+                .orElseThrow(LoginNotFoundException::new);
         final Study study = Study.createStudy(dto.getSubject(), member);
 
         final Meet meet = Meet.of(getMeetTime(dto), dto.getCount(), location, getMessage(dto), study);
