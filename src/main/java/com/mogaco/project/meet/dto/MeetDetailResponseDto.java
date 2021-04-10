@@ -52,7 +52,7 @@ public class MeetDetailResponseDto {
     /**
      * 공부 주제.
      */
-    List<StudyDto> studies = new ArrayList<>();
+    private List<StudyDto> studies = new ArrayList<>();
 
     @Builder
     public MeetDetailResponseDto(Long meetId, LocalDate startedAt, String title, String location, String time, List<StudyDto> studies, int count, String message) {
