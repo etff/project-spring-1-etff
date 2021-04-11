@@ -3,9 +3,12 @@ import {all, call, fork, put, takeEvery} from "redux-saga/effects";
 import {
   MEET_CREATE_FAILURE,
   MEET_CREATE_REQUEST,
+  MEET_CREATE_SUCCESS,
   MEET_DETAIL_LOADING_FAILURE,
   MEET_DETAIL_LOADING_REQUEST,
   MEET_DETAIL_LOADING_SUCCESS,
+  MEET_JOIN_FAILURE,
+  MEET_JOIN_SUCCESS,
   MEET_LOADING_FAILURE,
   MEET_LOADING_REQUEST,
   MEET_LOADING_SUCCESS,
@@ -55,7 +58,7 @@ function* createMeets(action) {
   try {
     const result = yield call(createMeetsAPI, action.payload);
     yield put({
-      type: MEET_CREATE_FAILURE,
+      type: MEET_CREATE_SUCCESS,
       payload: result.data,
     });
     yield put(push(`/meet/${result.data.id}`));
@@ -79,9 +82,7 @@ const loadMeetDetailAPI = (payload) => {
 
 function* loadMeetDetail(action) {
   try {
-    console.log(action);
     const result = yield call(loadMeetDetailAPI, action.payload);
-    console.log(result, "meet_detail_saga_data");
     yield put({
       type: MEET_DETAIL_LOADING_SUCCESS,
       payload: result.data,
@@ -99,10 +100,46 @@ function* watchLoadMeetDetail() {
   yield takeEvery(MEET_DETAIL_LOADING_REQUEST, loadMeetDetail);
 }
 
+// Meet Join
+const joinMeetsAPI = (payload) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const token = payload.token;
+  if (token) {
+    config.headers["Authorization"] = "Bearer " + token;
+  }
+  return axios.post(`/api/v1/meets/join/${payload.id}`, payload, config);
+};
+
+function* joinMeets(action) {
+  try {
+    const result = yield call(joinMeetsAPI, action.payload);
+    yield put({
+      type: MEET_JOIN_SUCCESS,
+      payload: result.data,
+    });
+    yield put(push(`/meet/${action.payload.id}`));
+  } catch (e) {
+    yield put({
+      type: MEET_JOIN_FAILURE,
+      payload: e,
+    });
+    yield put(push(`/meet/${action.payload.id}`));
+  }
+}
+
+function* watchJoinMeets() {
+  yield takeEvery(MEET_JOIN_REQUEST, joinMeets);
+}
+
 export default function* meetSaga() {
   yield all([
     fork(watchLoadMeets),
     fork(watchCreateMeets),
     fork(watchLoadMeetDetail),
+    fork(watchJoinMeets),
   ]);
 }
