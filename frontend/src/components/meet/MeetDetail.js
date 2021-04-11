@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import {Card, Divider, Layout, Typography,} from "antd";
+import {Divider, Layout} from "antd";
 import {useDispatch, useSelector} from "react-redux";
 import {Helmet} from "react-helmet";
 import "antd/dist/antd.css";
@@ -9,14 +9,10 @@ import MeetJoin from "./MeetJoin";
 import MeetAttendee from "./MeetAttendee";
 
 const {Content} = Layout;
-const {Title} = Typography;
-const {Meta} = Card;
 
 const MeetDetail = (req) => {
   const dispatch = useDispatch();
-  const {memberId, memberName, isAuthenticated} = useSelector(
-      (state) => state.auth
-  );
+  const {memberId, isAuthenticated} = useSelector((state) => state.auth);
 
   const {meetDetail, title, loading} = useSelector((state) => state.meet);
 

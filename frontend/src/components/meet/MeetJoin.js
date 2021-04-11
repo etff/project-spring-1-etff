@@ -52,7 +52,7 @@ const CollectionCreateForm = ({visible, onCreate, onCancel}) => {
           >
             <Input placeholder="ex) 00:00 ~ 14:00"/>
           </Form.Item>
-          <Form.Item name="subject" label="주제">
+          <Form.Item name="subject" label="공부주제">
             <Input/>
           </Form.Item>
         </Form>
@@ -62,11 +62,19 @@ const CollectionCreateForm = ({visible, onCreate, onCancel}) => {
 
 const MeetJoin = ({meetDetail, memberId, isAuthenticated}) => {
   const dispatch = useDispatch();
-  const leaderId = meetDetail.studies
-      .filter((v) => v.position === "LEADER")
-      .map((v) => v.member.id)[0];
-
   const [visible, setVisible] = useState(false);
+
+  const contains = meetDetail.studies
+      .map((v) => v.member.id)
+      .includes(memberId);
+
+  const buttonClick = () => {
+    if (!isAuthenticated) {
+      warning();
+    } else {
+      setVisible(true);
+    }
+  };
 
   const onCreate = (values) => {
     const {time, subject} = values;
@@ -81,6 +89,14 @@ const MeetJoin = ({meetDetail, memberId, isAuthenticated}) => {
     setVisible(false);
   };
 
+  const warning = () => {
+    Modal.warning({
+      title: "로그인 해주세요",
+      content: "로그인이 필요한 서비스입니다.",
+      okText: "확인",
+    });
+  };
+
   return (
       <>
         <Row>
@@ -89,14 +105,9 @@ const MeetJoin = ({meetDetail, memberId, isAuthenticated}) => {
           </Col>
 
           <Col span={11} push={1}>
-            {leaderId !== memberId && isAuthenticated ? (
+            {!contains ? (
                 <>
-                  <Button
-                      type="primary"
-                      danger
-                      size="large"
-                      onClick={() => setVisible(true)}
-                  >
+                  <Button type="primary" danger size="large" onClick={buttonClick}>
                     참가하기
                   </Button>
                   <CollectionCreateForm

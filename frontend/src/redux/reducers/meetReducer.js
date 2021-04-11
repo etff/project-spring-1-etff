@@ -5,6 +5,9 @@ import {
   MEET_DETAIL_LOADING_FAILURE,
   MEET_DETAIL_LOADING_REQUEST,
   MEET_DETAIL_LOADING_SUCCESS,
+  MEET_JOIN_FAILURE,
+  MEET_JOIN_REQUEST,
+  MEET_JOIN_SUCCESS,
   MEET_LOADING_FAILURE,
   MEET_LOADING_REQUEST,
   MEET_LOADING_SUCCESS,
@@ -60,6 +63,27 @@ export default function (state = initialState, action) {
       };
 
     case MEET_DETAIL_LOADING_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+
+    case MEET_JOIN_REQUEST:
+      return {
+        ...state,
+        meetDetail: null,
+        loading: true,
+      };
+    case MEET_JOIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        meetDetail: action.payload,
+        title: action.payload.title,
+      };
+
+    case MEET_JOIN_FAILURE:
       return {
         ...state,
         error: action.payload,

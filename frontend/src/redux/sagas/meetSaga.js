@@ -8,6 +8,7 @@ import {
   MEET_DETAIL_LOADING_REQUEST,
   MEET_DETAIL_LOADING_SUCCESS,
   MEET_JOIN_FAILURE,
+  MEET_JOIN_REQUEST,
   MEET_JOIN_SUCCESS,
   MEET_LOADING_FAILURE,
   MEET_LOADING_REQUEST,
@@ -111,7 +112,7 @@ const joinMeetsAPI = (payload) => {
   if (token) {
     config.headers["Authorization"] = "Bearer " + token;
   }
-  return axios.post(`/api/v1/meets/join/${payload.id}`, payload, config);
+  return axios.post(`/api/v1/meets/${payload.id}/join`, payload, config);
 };
 
 function* joinMeets(action) {
