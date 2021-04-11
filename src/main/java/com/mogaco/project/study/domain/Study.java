@@ -77,6 +77,15 @@ public class Study {
                 .build();
     }
 
+    public static Study joinStudy(String subject, Member member) {
+        return Study.builder()
+                .subject(subject)
+                .position(Position.ATTENDEE)
+                .status(Status.REQUEST)
+                .member(member)
+                .build();
+    }
+
     public void setMeet(Meet meet) {
         this.meet = meet;
     }

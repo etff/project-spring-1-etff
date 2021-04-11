@@ -6,6 +6,7 @@ import com.mogaco.project.meet.application.MeetService;
 import com.mogaco.project.meet.domain.MeetStatus;
 import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
+import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -123,6 +124,19 @@ class MeetControllerTest {
     }
 
     @Test
+    void createWithoutAccessToken() throws Exception {
+        mockMvc.perform(
+                post("/api/v1/meets")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(requestDto))
+
+        )
+                .andExpect(status().isUnauthorized());
+    }
+
+
+    @Test
     void list() throws Exception {
         mockMvc.perform(
                 get("/api/v1/meets")
@@ -152,5 +166,49 @@ class MeetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString(GIVEN_TITLE)))
                 .andExpect(content().string(containsString(GIVEN_LOCATION)));
+    }
+
+    @Test
+    void joinMeetingWithValidAttributes() throws Exception {
+        final MeetJoinDto meetJoinDto = new MeetJoinDto(GIVEN_ID, "10:00 ~ 14:00", "DDD");
+
+        mockMvc.perform(
+                post("/api/v1/meets/{id}/join", GIVEN_ID)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(meetJoinDto))
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+        )
+                .andExpect(header().string("location", "/meets/1"))
+                .andExpect(status().isCreated());
+
+        verify(meetService).joinMeeting(anyLong(), anyLong(), any(MeetJoinDto.class));
+    }
+
+    @Test
+    void joinMeetingWithInValidAttributes() throws Exception {
+        final MeetJoinDto meetJoinDto = new MeetJoinDto();
+
+        mockMvc.perform(
+                post("/api/v1/meets/{id}/join", GIVEN_ID)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(meetJoinDto))
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+        )
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void joinMeetingWithoutAccessToken() throws Exception {
+        final MeetJoinDto meetJoinDto = new MeetJoinDto(GIVEN_ID, "10:00 ~ 14:00", "DDD");
+
+        mockMvc.perform(
+                post("/api/v1/meets/{id}/join", GIVEN_ID)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(meetJoinDto))
+        )
+                .andExpect(status().isUnauthorized());
     }
 }

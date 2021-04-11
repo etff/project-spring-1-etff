@@ -8,6 +8,7 @@ import com.mogaco.project.meet.domain.MeetTime;
 import com.mogaco.project.meet.domain.Message;
 import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
+import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import com.mogaco.project.meet.infra.MeetRepository;
 import com.mogaco.project.member.domain.Member;
@@ -69,9 +70,28 @@ public class MeetService {
     /**
      * 식별자에 해당하는 모임을 가져옵니다.
      */
-    public MeetDetailResponseDto getMeeting(Long id) {
+    public MeetDetailResponseDto getMeeting(Long id) throws MeetingNotFoundException {
         final Meet meet = meetRepository.findById(id)
                 .orElseThrow(() -> new MeetingNotFoundException(id));
+        return new MeetDetailResponseDto(meet);
+    }
+
+    /**
+     * 모임에 참가하고, 모임 정보를 리턴합니다.
+     *
+     * @param meetId        모임 식별자
+     * @param loginMemberId 로그인 식별자
+     * @param meetJoinDto   모임 참가 명세서
+     * @return 모임 참가 명세서
+     */
+    @Transactional
+    public MeetDetailResponseDto joinMeeting(Long meetId, Long loginMemberId, MeetJoinDto meetJoinDto) {
+        final Member member = memberRepository.findById(loginMemberId)
+                .orElseThrow(LoginNotFoundException::new);
+        final Meet meet = meetRepository.findById(meetId)
+                .orElseThrow(() -> new MeetingNotFoundException(meetId));
+        final Study study = Study.joinStudy(meetJoinDto.getSubject(), member);
+        meet.addStudy(study);
         return new MeetDetailResponseDto(meet);
     }
 
@@ -82,6 +102,4 @@ public class MeetService {
     private MeetTime getMeetTime(MeetSupplier meetSupplier) {
         return new MeetTime(meetSupplier.getStartedAt(), meetSupplier.getTime());
     }
-
-
 }
