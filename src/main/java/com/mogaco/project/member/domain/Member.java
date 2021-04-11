@@ -1,5 +1,6 @@
 package com.mogaco.project.member.domain;
 
+import com.mogaco.project.study.domain.Study;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 회원 정보.
@@ -45,13 +49,17 @@ public class Member {
      */
     private boolean deleted;
 
+    @OneToMany(mappedBy = "member")
+    private List<Study> studies = new ArrayList<>();
+
     @Builder
-    public Member(Long id, String email, String name, String password, boolean deleted) {
+    public Member(Long id, String email, String name, String password, boolean deleted, List<Study> studies) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.password = password;
         this.deleted = deleted;
+        this.studies = studies;
     }
 
     public static Member of(String name, String email, String password) {
@@ -59,6 +67,7 @@ public class Member {
                 .name(name)
                 .email(email)
                 .password(password)
+                .studies(new ArrayList<>())
                 .deleted(false)
                 .build();
     }

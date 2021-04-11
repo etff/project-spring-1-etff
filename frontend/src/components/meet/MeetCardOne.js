@@ -14,7 +14,7 @@ const MeetCardOne = ({meets}) => {
                       <Card
                           cover={
                             <img
-                                alt="example"
+                                alt="study"
                                 src="https://cdn.pixabay.com/photo/2021/03/18/19/56/keyboard-6105750__340.jpg"
                             />
                           }

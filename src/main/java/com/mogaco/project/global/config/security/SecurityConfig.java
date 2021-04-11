@@ -45,8 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/h2-console/**").permitAll()
             .antMatchers("/api/auth").permitAll()
             .antMatchers("/api/health-check").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/v1/meets").permitAll()
-
+            .antMatchers(HttpMethod.GET, "/api/v1/meets/**").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/members").permitAll()
             .antMatchers(HttpMethod.PATCH, "/api/v1/members/{id}")
             .access("@authenticationGuard.checkIdMatch(authentication,#id)")
