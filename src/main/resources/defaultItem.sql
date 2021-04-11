@@ -1,19 +1,27 @@
 /* 시작시 샘플데이터 입력 */
 INSERT INTO MEET (ID, CREATED_AT, UPDATED_AT, COUNT, DETAIL, LOCATION, STARTED_AT, TIME, MESSAGE, TITLE)
-VALUES (1, current_timestamp , current_timestamp, 5, '스타벅스', '홍대', '2021-04-01', '10:00 ~ 14:00', 'study', 'mogaco');
+VALUES (1, current_timestamp, current_timestamp, 5, '스타벅스', '홍대', '2021-04-01', '10:00 ~ 14:00', '홍대에서 만나서 같이 공부해요',
+        '모여서 같이 코딩해요');
 INSERT INTO MEET (ID, CREATED_AT, UPDATED_AT, COUNT, DETAIL, LOCATION, STARTED_AT, TIME, MESSAGE, TITLE)
-VALUES (2, current_timestamp , current_timestamp, 5, '커피빈스', '강남', '2021-04-03', '10:00 ~ 14:00', 'study', 'mogaco1');
+VALUES (2, current_timestamp, current_timestamp, 5, '커피빈스', '강남', '2021-04-03', '10:00 ~ 14:00', '주말에 열정적으로 코딩할 사람?',
+        '강남에서 모여요');
 INSERT INTO MEET (ID, CREATED_AT, UPDATED_AT, COUNT, DETAIL, LOCATION, STARTED_AT, TIME, MESSAGE, TITLE)
-VALUES (3, current_timestamp , current_timestamp, 5, '스피드 스터디룸', '종로', '2021-04-15', '10:00 ~ 14:00', 'study', 'mogaco2');
+VALUES (3, current_timestamp, current_timestamp, 5, '스피드 스터디룸', '종로', '2021-04-15', '10:00 ~ 14:00', 'study halle?',
+        '같이 스터디해요');
 INSERT INTO MEET (ID, CREATED_AT, UPDATED_AT, COUNT, DETAIL, LOCATION, STARTED_AT, TIME, MESSAGE, TITLE)
-VALUES (4, current_timestamp , current_timestamp, 5, '맥도날드', '이대', '2021-04-20', '10:00 ~ 14:00', 'study', 'mogaco3');
+VALUES (4, current_timestamp, current_timestamp, 5, '맥도날드', '이대', '2021-04-20', '10:00 ~ 14:00', '저는 AI 공부할거에요', '모각코');
 INSERT INTO MEET (ID, CREATED_AT, UPDATED_AT, COUNT, DETAIL, LOCATION, STARTED_AT, TIME, MESSAGE, TITLE)
-VALUES (5, current_timestamp , current_timestamp, 5, '스타벅스', '성수', '2021-04-04', '10:00 ~ 14:00', 'study', 'mogaco4');
-INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED) VALUES (1, 'test@test.com', 'test', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
-INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED) VALUES (2, 'test2@test.com', 'test2', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
-INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED) VALUES (3, 'test3@test.com', 'test3', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
-INSERT INTO ROLE (ID, NAME, USER_ID) VALUES (1, 'USER', 1);
-INSERT INTO ROLE (ID, NAME, USER_ID) VALUES (2, 'USER',2);
+VALUES (5, current_timestamp, current_timestamp, 5, '스타벅스', '성수', '2021-04-04', '10:00 ~ 14:00', '', '주말에 같이 공부할 사람?');
+INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED)
+VALUES (1, 'test@test.com', 'test', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
+INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED)
+VALUES (2, 'test2@test.com', 'test2', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
+INSERT INTO MEMBER (ID, EMAIL, NAME, PASSWORD, DELETED)
+VALUES (3, 'test3@test.com', 'test3', '$2a$10$KI.UNeE8kwLfJWWOyLFM/.J.KQdI5/gqCAGZrEjAxbGHHUl/tY6Ge', false);
+INSERT INTO ROLE (ID, NAME, USER_ID)
+VALUES (1, 'USER', 1);
+INSERT INTO ROLE (ID, NAME, USER_ID)
+VALUES (2, 'USER', 2);
 INSERT INTO STUDY (ID, SUBJECT, MEET_ID, POSITION, STATUS, MEMBER_ID) VALUES (1, 'NODEJS', 1, 'LEADER', 'APPROVED', 1);
 INSERT INTO STUDY (ID, SUBJECT, MEET_ID, POSITION, STATUS, MEMBER_ID) VALUES (2, 'NODEJS', 2, 'LEADER', 'APPROVED', 2);
 INSERT INTO STUDY (ID, SUBJECT, MEET_ID, POSITION, STATUS, MEMBER_ID) VALUES (3, 'NODEJS', 3, 'LEADER', 'APPROVED', 3);
