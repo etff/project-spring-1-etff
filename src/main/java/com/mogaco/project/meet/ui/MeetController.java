@@ -5,6 +5,7 @@ import com.mogaco.project.global.utils.SecurityUtil;
 import com.mogaco.project.meet.application.MeetService;
 import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
+import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -54,4 +55,16 @@ public class MeetController {
         return ResponseEntity.ok().body(meetResponse);
     }
 
+    /**
+     * 주어진 식별자에 해당하는 모임에 참가한다.
+     */
+    @PostMapping("{id}/join")
+    public ResponseEntity<MeetDetailResponseDto> joinMeeting(@PathVariable Long id, @Valid @RequestBody MeetJoinDto meetJoinDto) {
+        final Long loginMemberId = securityUtil.getCurrentMemberId()
+                .orElseThrow(LoginNotFoundException::new);
+        final MeetDetailResponseDto meetResponse = meetService.joinMeeting(id, loginMemberId, meetJoinDto);
+
+        return ResponseEntity.created(URI.create("/meets/" + id))
+                .body(meetResponse);
+    }
 }
