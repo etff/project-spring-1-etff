@@ -31,6 +31,7 @@ public class MemberService {
    * @param dto 등록할 회원 정보
    * @return 회원 식별자
    */
+  @Transactional
   public Long registerMember(MemberRegisterDto dto) {
     final String email = dto.getEmail();
     if (memberRepository.existsByEmail(email)) {
