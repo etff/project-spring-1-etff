@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: release
 
 server:
   servlet:
@@ -15,17 +15,43 @@ jwt:
 ---
 
 spring:
-  profiles:
-    active: local
   datasource:
     data: classpath:defaultItem.sql
     url: jdbc:h2:mem:testdb
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        default_batch_fetch_size: 100
+    generate-ddl: true
+  config:
+    activate:
+      on-profile: local
+
+---
+
+spring:
+  datasource:
+    url: ${DB_PATH}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
       hibernate:
-        ddl-auto: create
-    hibernate:
-      default_batch_fetch_size: 100
+        ddl-auto: validate
+      properties:
+        hibernate:
+          default_batch_fetch_size: 100
+      generate-ddl: false
+  config:
+    activate:
+      on-profile: release
 
+logging.level:
+  org.hibernate.SQL: info
