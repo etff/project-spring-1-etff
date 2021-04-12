@@ -25,7 +25,7 @@ public class Role {
     /**
      * 사용자 식별자.
      */
-    private Long userId;
+    private Long memberId;
 
     /**
      * 권한명.
@@ -33,8 +33,8 @@ public class Role {
     @Getter
     private String name;
 
-    public Role(Long userId, String name) {
-        this.userId = userId;
+    public Role(Long memberId, String name) {
+        this.memberId = memberId;
         this.name = name;
     }
 

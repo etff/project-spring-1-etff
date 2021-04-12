@@ -57,11 +57,11 @@ public class AuthenticationService {
   /**
    * 주어진 사용자 id에 해당하는 권한 목록을 리턴한다.
    *
-   * @param userId 주어진 회원 id
+   * @param memberId 주어진 회원 id
    * @return 회원 권한 목록
    */
-  public List<Role> roles(Long userId) {
-    return roleRepository.findAllByUserId(userId);
+  public List<Role> roles(Long memberId) {
+    return roleRepository.findAllByMemberId(memberId);
   }
 
   private String createToken(Long userId) {
