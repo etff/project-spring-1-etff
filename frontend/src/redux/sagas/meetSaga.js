@@ -62,7 +62,7 @@ function* createMeets(action) {
       type: MEET_CREATE_SUCCESS,
       payload: result.data,
     });
-    yield put(push(`/meet/${result.data.id}`));
+    yield put(push(`/`));
   } catch (e) {
     yield put({
       type: MEET_CREATE_FAILURE,

@@ -2,7 +2,7 @@ import "antd/dist/antd.css";
 import {Button, Col, Form, Input, Row, Typography} from "antd";
 import {Content} from "antd/lib/layout/layout";
 import {useDispatch} from "react-redux";
-import {REGISTER_REQUEST} from "../../redux/types";
+import {MEMBER_REGISTER_REQUEST} from "../../redux/types";
 
 const {Title} = Typography;
 
@@ -21,8 +21,9 @@ const Join = () => {
   const onFinish = (values) => {
     const {name, email, password} = values;
     const newMember = {name, email, password};
+
     dispatch({
-      type: REGISTER_REQUEST,
+      type: MEMBER_REGISTER_REQUEST,
       payload: newMember,
     });
   };

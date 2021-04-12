@@ -14,9 +14,9 @@ import {
   MEMBER_LOADING_FAILURE,
   MEMBER_LOADING_REQUEST,
   MEMBER_LOADING_SUCCESS,
-  REGISTER_FAILURE,
-  REGISTER_REQUEST,
-  REGISTER_SUCCESS,
+  MEMBER_REGISTER_FAILURE,
+  MEMBER_REGISTER_REQUEST,
+  MEMBER_REGISTER_SUCCESS,
 } from "../types";
 
 // Register
@@ -28,20 +28,20 @@ function* registerMember(action) {
   try {
     const result = yield call(registerMemberAPI, action.payload);
     yield put({
-      type: REGISTER_SUCCESS,
+      type: MEMBER_REGISTER_SUCCESS,
       payload: result.data,
     });
     yield put(push("/"));
   } catch (e) {
     yield put({
-      type: REGISTER_FAILURE,
+      type: MEMBER_REGISTER_FAILURE,
       payload: e.response,
     });
   }
 }
 
 function* watchRegisterMember() {
-  yield takeEvery(REGISTER_REQUEST, registerMember);
+  yield takeEvery(MEMBER_REGISTER_REQUEST, registerMember);
 }
 
 // clear Error
@@ -80,7 +80,6 @@ const memberLoadingAPI = (token) => {
 
 function* memberLoading(action) {
   try {
-    console.log(action, "memberLoading");
     const result = yield call(memberLoadingAPI, action.payload);
     yield put({
       type: MEMBER_LOADING_SUCCESS,
@@ -154,7 +153,6 @@ export default function* authSaga() {
     fork(watchClearError),
     fork(watchLoginMember),
     fork(watchLogout),
-    fork(watchRegisterMember),
     fork(watchClearError),
   ]);
 }
