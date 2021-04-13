@@ -21,7 +21,7 @@ import {
 
 // Register
 const registerMemberAPI = (req) => {
-  return axios.post("api/v1/members", req);
+  return axios.post("/api/v1/members", req);
 };
 
 function* registerMember(action) {
