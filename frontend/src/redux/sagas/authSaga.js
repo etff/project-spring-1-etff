@@ -65,8 +65,6 @@ function* watchClearError() {
 // Member Loading
 
 const memberLoadingAPI = (token) => {
-  console.log(token);
-
   const config = {
     headers: {
       "Content-Type": "application/json",
