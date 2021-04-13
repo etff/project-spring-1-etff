@@ -2,9 +2,11 @@ import {useCallback} from "react";
 import {Header} from "antd/lib/layout/layout";
 import {HomeTwoTone, UserOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
-import {Avatar, Button, Col, Row, Space} from "antd";
+import {Avatar, Button, Col, Menu, Row, Space} from "antd";
 import {Link} from "react-router-dom";
 import {LOGOUT_REQUEST} from "../redux/types";
+
+const {SubMenu} = Menu;
 
 const NavBar = () => {
   const dispatch = useDispatch();
