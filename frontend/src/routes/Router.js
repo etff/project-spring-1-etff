@@ -7,12 +7,12 @@ import {Content} from "antd/lib/layout/layout";
 import Foot from "../components/Foot";
 import MeetCreate from "../components/meet/MeetCreate";
 import MeetDetail from "../components/meet/MeetDetail";
-import NavBar from "../components/navigation";
+import Navigation from "../components/Navigation/Navigation";
 
 const MyRouter = () => {
   return (
       <>
-        <NavBar/>
+        <Navigation/>
         <Layout>
           <Layout className="site-layout-background">
             <Content style={{padding: "0 50px"}}>

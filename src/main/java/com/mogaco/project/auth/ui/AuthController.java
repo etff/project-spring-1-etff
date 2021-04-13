@@ -5,6 +5,7 @@ import com.mogaco.project.auth.dto.AuthRequestDto;
 import com.mogaco.project.auth.dto.TokenResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import java.net.URI;
  */
 @RequestMapping("/api/auth")
 @RestController
+@CrossOrigin
 @RequiredArgsConstructor
 public class AuthController {
 
