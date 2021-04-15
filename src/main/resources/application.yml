@@ -56,10 +56,3 @@ spring:
 
 logging.level:
   org.hibernate.SQL: info
-
-server:
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: ${SSL_PASS}
-  http2:
-    enabled: true
