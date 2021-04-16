@@ -10,10 +10,12 @@ import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
 import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
+import com.mogaco.project.meet.dto.MyMeetResponseDto;
 import com.mogaco.project.meet.infra.MeetRepository;
 import com.mogaco.project.member.domain.Member;
 import com.mogaco.project.member.domain.MemberRepository;
 import com.mogaco.project.study.domain.Study;
+import com.mogaco.project.study.domain.StudyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,7 +23,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 모임 정보를 다룬다.
@@ -34,6 +38,7 @@ public class MeetService {
     private final MeetRepository meetRepository;
     private final LocationConverter locationConverter;
     private final MemberRepository memberRepository;
+    private final StudyRepository studyRepository;
 
     /**
      * 모임을 생성한다.
@@ -93,6 +98,19 @@ public class MeetService {
         final Study study = Study.joinStudy(meetJoinDto.getSubject(), member);
         meet.addStudy(study);
         return new MeetDetailResponseDto(meet);
+    }
+
+    /**
+     * 로그인한 회원의 모임 목록을 가져옵니다.
+     *
+     * @param loginMemberId 로그인한 회원 식별자.
+     * @return 등록된 모임 목록.
+     */
+    public List<MyMeetResponseDto> getMyMeetings(Long loginMemberId) {
+        List<Study> studies = studyRepository.findByMemberId(loginMemberId);
+        return studies.stream()
+                .map(MyMeetResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     private Message getMessage(MeetSupplier meetSupplier) {

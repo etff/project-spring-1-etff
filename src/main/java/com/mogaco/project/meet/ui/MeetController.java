@@ -7,6 +7,7 @@ import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
 import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
+import com.mogaco.project.meet.dto.MyMeetResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 /**
  * 모임의 사용자 요청을 처리한다.
@@ -66,5 +68,14 @@ public class MeetController {
 
         return ResponseEntity.created(URI.create("/meets/" + id))
                 .body(meetResponse);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<MyMeetResponseDto>> getMyMeeting() {
+        final Long loginMemberId = securityUtil.getCurrentMemberId()
+                .orElseThrow(LoginNotFoundException::new);
+
+        List<MyMeetResponseDto> myMeets = meetService.getMyMeetings(loginMemberId);
+        return ResponseEntity.ok().body(myMeets);
     }
 }

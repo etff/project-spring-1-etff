@@ -8,6 +8,9 @@ import com.mogaco.project.meet.dto.MainResponseDto;
 import com.mogaco.project.meet.dto.MeetDetailResponseDto;
 import com.mogaco.project.meet.dto.MeetJoinDto;
 import com.mogaco.project.meet.dto.MeetRequestDto;
+import com.mogaco.project.meet.dto.MyMeetResponseDto;
+import com.mogaco.project.study.domain.Position;
+import com.mogaco.project.study.domain.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -210,5 +214,29 @@ class MeetControllerTest {
                         .content(mapper.writeValueAsString(meetJoinDto))
         )
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getMyMeetings() throws Exception {
+        final MyMeetResponseDto myMeetResponseDto = MyMeetResponseDto.builder()
+                .meetId(GIVEN_ID)
+                .title(GIVEN_TITLE)
+                .meetStatus(MeetStatus.OPEN)
+                .position(Position.LEADER)
+                .status(Status.APPROVED)
+                .startedAt(GIVEN_START_DAY)
+                .build();
+
+        given(meetService.getMyMeetings(anyLong()))
+                .willReturn(Collections.singletonList(myMeetResponseDto));
+
+        mockMvc.perform(
+                get("/api/v1/meets/me")
+                        .header("Authorization", "Bearer " + VALID_TOKEN)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString(GIVEN_TITLE)));
+
+        verify(meetService).getMyMeetings(anyLong());
     }
 }
