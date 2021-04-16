@@ -36,9 +36,7 @@ const RightMenu = () => {
                 {!isAuthenticated ? (
                     <Link to="/join">JOIN</Link>
                 ) : (
-                    <Link onClick={onLogout} to="#">
-                        My Info
-                    </Link>
+                    <Link to="/mystudy">My Info</Link>
                 )}
             </Menu.Item>
         </Menu>

@@ -21,7 +21,13 @@ import {
 
 // Register
 const registerMemberAPI = (req) => {
-  return axios.post("/api/v1/members", req);
+  const config = {
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  return axios.post("/api/v1/members", req, config);
 };
 
 function* registerMember(action) {
@@ -98,6 +104,7 @@ function* watchMemberLoading() {
 // Login
 const loginMemberAPI = (loginData) => {
   const config = {
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
