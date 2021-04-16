@@ -4,6 +4,7 @@ import com.mogaco.project.auth.application.AuthenticationService;
 import com.mogaco.project.global.config.security.filter.AuthenticationErrorFilter;
 import com.mogaco.project.global.config.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.Filter;
 
@@ -34,6 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     http.csrf()
             .disable()
+            .cors()
+            .and()
             .headers()
             .frameOptions()
             .sameOrigin()
@@ -68,5 +74,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/favicon.ico")
             .antMatchers("/manifest.json")
             .antMatchers("/docs/index/html");
+  }
+
+  @Bean
+  CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+    return source;
   }
 }
