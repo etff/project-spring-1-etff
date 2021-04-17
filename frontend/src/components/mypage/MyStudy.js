@@ -1,39 +1,65 @@
-import {Breadcrumb, Layout, Space, Table} from "antd";
+import React, {useEffect, useState} from "react";
+import {Breadcrumb, Layout, message, Popconfirm, Space, Table} from "antd";
+import {MEET_DELETE_REQUEST, MEET_MINE_LOADING_REQUEST,} from "../../redux/types";
+import {useDispatch, useSelector} from "react-redux";
 import {Helmet} from "react-helmet";
+import {Link} from "react-router-dom";
 import "antd/dist/antd.css";
-import {useDispatch} from "react-redux";
 
 const {Content} = Layout;
 const {Column, ColumnGroup} = Table;
 
 const MyStudy = () => {
-  //const {meets} = useSelector((state) => state.meet);
+  const {studies} = useSelector((state) => state.meet);
+  const {memberId, isAuthenticated} = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const originData = [];
+  const [data, setData] = useState(originData);
 
-  // const {isAuthenticated} = useSelector((state) => state.auth);
+  useEffect(() => {
+    dispatch({
+      type: MEET_MINE_LOADING_REQUEST,
+      payload: {
+        memberId: localStorage.getItem("memberId"),
+        token: localStorage.getItem("token"),
+      },
+    });
+  }, [dispatch]);
 
-  // useEffect(() => {
-  //     dispatch({type: MEET_LOADING_REQUEST});
-  // }, [dispatch]);
+  studies.map(({meetId, title, meetStatus, position, startedAt}) => {
+    originData.push({
+      key: meetId,
+      startedAt,
+      title,
+      position,
+      meetStatus,
+    });
+  });
 
-  const data = [
-    {
-      key: "1",
-      startedAt: "2020-04-02",
-      title: "강남에서 모각코해요",
-    },
-    {
-      key: "2",
-      startedAt: "2020-04-21",
-      title: "홍대에서 모각코해요",
-    },
-    {
-      key: "3",
-      startedAt: "2020-05-21",
-      title: "종로에서 모각코해요",
-    },
-  ];
+  const handleDelete = (key) => {
+    const newData = [...data];
+    const index = newData.findIndex((item) => key === item.key);
 
+    dispatch({
+      type: MEET_DELETE_REQUEST,
+      payload: {
+        key,
+        token: localStorage.getItem("token"),
+      },
+    });
+    if (index > -1) {
+      newData.splice(index, 1);
+      setData(newData);
+    } else {
+      setData(newData);
+    }
+  };
+
+  function cancel(e) {
+    message.error("취소하였습니다");
+  }
+
+  console.log(data, "data");
   return (
       <>
         <Helmet title="MyStudy"/>
@@ -51,31 +77,78 @@ const MyStudy = () => {
               className="site-layout-background"
               style={{padding: 24, minHeight: 380}}
           >
-            <Table dataSource={data}>
+            <Table dataSource={data.length == 0 ? originData : data}>
               <Column
                   title="날짜"
                   dataIndex="startedAt"
                   key="startedAt"
                   ellipsis="true"
+                  render={(text, record) =>
+                      record.meetStatus === "OPEN" ? (
+                          record.startedAt
+                      ) : (
+                          <del>{record.startedAt}</del>
+                      )
+                  }
               />
               <Column
                   title="제목"
                   dataIndex="title"
                   key="title"
                   ellipsis="true"
+                  render={(text, record) =>
+                      record.meetStatus === "OPEN" ? (
+                          record.title
+                      ) : (
+                          <del>{record.title}</del>
+                      )
+                  }
               />
               <Column
                   title="변경하기"
                   key="edit"
-                  render={(text, record) => (
-                      <Space size="middle">
-                        <a>수정</a>
-                        <a>삭제</a>
-                      </Space>
-                  )}
+                  render={(text, record) =>
+                      record.meetStatus === "OPEN" ? (
+                          <Space size="middle">
+                            {record.position === "LEADER" ? (
+                                <Popconfirm
+                                    title="삭제하시겠습니까?"
+                                    onConfirm={() => handleDelete(record.key)}
+                                    onCancel={cancel}
+                                    okText="예"
+                                    cancelText="아니오"
+                                >
+                                  <Link to="#">삭제</Link>
+                                </Popconfirm>
+                            ) : (
+                                ""
+                            )}
+                          </Space>
+                      ) : (
+                          ""
+                      )
+                  }
+              />
+              <Column
+                  title="승인하기"
+                  key="approve"
+                  render={(text, record) =>
+                      record.meetStatus === "OPEN" ? (
+                          <Space size="middle">
+                            {record.position === "LEADER" ? (
+                                <Link to={`/mystudy/approve/${record.key}`}>
+                                  승인하기
+                                </Link>
+                            ) : (
+                                ""
+                            )}
+                          </Space>
+                      ) : (
+                          ""
+                      )
+                  }
               />
             </Table>
-            ,
           </div>
         </Content>
       </>

@@ -78,6 +78,7 @@ const authReducer = (state = initialState, action) => {
       };
     case LOGOUT_SUCCESS:
       localStorage.removeItem("token");
+      localStorage.removeItem("memberId");
       return {
         token: null,
         member: null,
@@ -93,6 +94,7 @@ const authReducer = (state = initialState, action) => {
         isLoading: true,
       };
     case MEMBER_LOADING_SUCCESS:
+      localStorage.setItem("memberId", action.payload.id);
       return {
         ...state,
         isAuthenticated: true,

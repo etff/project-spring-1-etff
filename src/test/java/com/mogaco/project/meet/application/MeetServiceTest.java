@@ -225,7 +225,7 @@ class MeetServiceTest {
             @DisplayName("내가 속한 모임 목록을 리턴한다.")
             @Test
             void it_returns_meet_response() {
-                List<MyMeetResponseDto> myMeetings = meetService.getMyMeetings(GIVEN_MEMBER_ID);
+                List<MyMeetResponseDto> myMeetings = meetService.getJoinMeetings(GIVEN_MEMBER_ID);
 
                 assertThat(myMeetings.size()).isEqualTo(1);
                 assertThat(myMeetings).extracting("title").containsExactlyInAnyOrder(GIVEN_TITLE);
