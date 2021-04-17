@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,12 +71,21 @@ public class MeetController {
                 .body(meetResponse);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<List<MyMeetResponseDto>> getMyMeeting() {
-        final Long loginMemberId = securityUtil.getCurrentMemberId()
-                .orElseThrow(LoginNotFoundException::new);
-
-        List<MyMeetResponseDto> myMeets = meetService.getMyMeetings(loginMemberId);
+    /**
+     * 회원의 모임 참가 목록을 가져옵니다.
+     */
+    @GetMapping("/join/{id}")
+    public ResponseEntity<List<MyMeetResponseDto>> getJoinMeetings(@PathVariable Long id) {
+        List<MyMeetResponseDto> myMeets = meetService.getJoinMeetings(id);
         return ResponseEntity.ok().body(myMeets);
+    }
+
+    /**
+     * 모임을 삭제합니다.
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteMeeting(@PathVariable Long id) {
+        meetService.deleteMeeting(id);
+        return ResponseEntity.noContent().build();
     }
 }

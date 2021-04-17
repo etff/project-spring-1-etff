@@ -103,14 +103,27 @@ public class MeetService {
     /**
      * 로그인한 회원의 모임 목록을 가져옵니다.
      *
-     * @param loginMemberId 로그인한 회원 식별자.
+     * @param memberId 로그인한 회원 식별자.
      * @return 등록된 모임 목록.
      */
-    public List<MyMeetResponseDto> getMyMeetings(Long loginMemberId) {
-        List<Study> studies = studyRepository.findByMemberId(loginMemberId);
+    public List<MyMeetResponseDto> getJoinMeetings(Long memberId) {
+        List<Study> studies = studyRepository.findByMemberId(memberId);
         return studies.stream()
                 .map(MyMeetResponseDto::new)
+                .sorted((a, b) -> b.getStartedAt().compareTo(a.getStartedAt()))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 모임을 삭제합니다.
+     *
+     * @param id 모임 식별자.
+     */
+    @Transactional
+    public void deleteMeeting(Long id) {
+        meetRepository.findById(id)
+                .orElseThrow(() -> new MeetingNotFoundException(id));
+        meetRepository.deleteById(id);
     }
 
     private Message getMessage(MeetSupplier meetSupplier) {
