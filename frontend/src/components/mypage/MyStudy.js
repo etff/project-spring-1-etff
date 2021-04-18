@@ -129,25 +129,6 @@ const MyStudy = () => {
                       )
                   }
               />
-              <Column
-                  title="승인하기"
-                  key="approve"
-                  render={(text, record) =>
-                      record.meetStatus === "OPEN" ? (
-                          <Space size="middle">
-                            {record.position === "LEADER" ? (
-                                <Link to={`/mystudy/approve/${record.key}`}>
-                                  승인하기
-                                </Link>
-                            ) : (
-                                ""
-                            )}
-                          </Space>
-                      ) : (
-                          ""
-                      )
-                  }
-              />
             </Table>
           </div>
         </Content>
