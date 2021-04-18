@@ -81,7 +81,7 @@ public class Study {
         return Study.builder()
                 .subject(subject)
                 .position(Position.ATTENDEE)
-                .status(Status.REQUEST)
+                .status(Status.APPROVED)
                 .member(member)
                 .build();
     }
