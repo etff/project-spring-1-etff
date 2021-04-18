@@ -4,9 +4,6 @@ import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {LOGOUT_REQUEST} from "../../redux/types";
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-
 const {useBreakpoint} = Grid;
 
 const RightMenu = () => {
@@ -36,9 +33,7 @@ const RightMenu = () => {
                 {!isAuthenticated ? (
                     <Link to="/join">JOIN</Link>
                 ) : (
-                    <Link onClick={onLogout} to="#">
-                        My Info
-                    </Link>
+                    <Link to="/mystudy">My Info</Link>
                 )}
             </Menu.Item>
         </Menu>

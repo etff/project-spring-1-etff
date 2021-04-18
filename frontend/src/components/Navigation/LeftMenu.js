@@ -2,9 +2,6 @@ import React from "react";
 import {Grid, Menu} from "antd";
 import {Link} from "react-router-dom";
 
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-
 const {useBreakpoint} = Grid;
 
 const LeftMenu = () => {
