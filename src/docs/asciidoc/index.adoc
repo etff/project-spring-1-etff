@@ -129,11 +129,11 @@ CURL:
 include::{path}/curl-request.adoc[]
 
 Request Header:
-include::{path}/request-headers.adoc[]
+include::{path}/request-headers.adoc
 
 Request Path Parameters:
 
-include::{path}/path-parameters.adoc[]
+include::{path}/path-parameters.adoc
 
 Request Fields:
 
@@ -197,3 +197,33 @@ include::{path}/response-fields.adoc[]
 Response HTTP Example:
 
 include::{path}/http-response.adoc[]
+
+[[AUTH]]
+== AUTH
+
+=== Login  /auth
+
+사용자 인증 요청을 처리하고 인증 정보를 리턴한다.
+
+==== Request
+:path: {snippets}/login
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+
+Request Fields:
+
+include::{path}/request-fields.adoc[]
+
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
