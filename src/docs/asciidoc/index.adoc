@@ -9,7 +9,7 @@
 [[introduction]]
 == Overview
 
-고양이 장난감 가게 API
+모여서 각자 코딩하기 API
 
 [[overview]]
 == HTTP verbs
@@ -104,10 +104,6 @@ CURL:
 
 include::{path}/curl-request.adoc[]
 
-Request Fields:
-
-include::{path}/request-fields.adoc[]
-
 Request HTTP Example:
 include::{path}/http-request.adoc[]
 
@@ -128,16 +124,10 @@ CURL:
 
 include::{path}/curl-request.adoc[]
 
-Request Header:
-include::{path}/request-headers.adoc
 
 Request Path Parameters:
 
-include::{path}/path-parameters.adoc
-
-Request Fields:
-
-include::{path}/request-fields.adoc[]
+include::{path}/path-parameters.adoc[]
 
 Request HTTP Example:
 include::{path}/http-request.adoc[]
@@ -147,6 +137,8 @@ include::{path}/http-request.adoc[]
 Response HTTP Example:
 
 include::{path}/http-response.adoc[]
+
+
 
 === Delete /members/{id}
 
@@ -159,12 +151,8 @@ CURL:
 
 include::{path}/curl-request.adoc[]
 
-Request Header:
-include::{path}/request-headers.adoc[]
 
-Request Path Parameters:
 
-include::{path}/path-parameters.adoc[]
 
 Request HTTP Example:
 include::{path}/http-request.adoc[]
@@ -213,9 +201,55 @@ CURL:
 include::{path}/curl-request.adoc[]
 
 
-Request Fields:
+Request HTTP Example:
+include::{path}/http-request.adoc[]
 
-include::{path}/request-fields.adoc[]
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+[[MEET]]
+== MEET
+
+=== GET /meets/join/{id}
+
+참가한 모임 대한 정보를 돌려준다.
+
+==== Request
+:path: {snippets}/joined-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request Path Parameters:
+
+include::{path}/path-parameters.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response Fields:
+include::{path}/response-fields.adoc[]
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Create /meets
+
+모임을 등록한다.
+
+==== Request
+:path: {snippets}/create-meet
+
+CURL:
+
+include::{path}/curl-request.adoc[]
 
 
 Request HTTP Example:
@@ -227,3 +261,46 @@ Response HTTP Example:
 
 include::{path}/http-response.adoc[]
 
+=== Join /meets
+
+모임에 참가한다.
+
+==== Request
+:path: {snippets}/join-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request Fields:
+
+include::{path}/request-body.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Delete /meets/{id}
+
+모임을 삭제한다.
+
+==== Request
+:path: {snippets}/delete-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]

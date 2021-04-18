@@ -1,6 +1,6 @@
 package com.mogaco.project.meet.ui;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mogaco.project.common.BaseControllerTest;
 import com.mogaco.project.global.utils.SecurityUtil;
 import com.mogaco.project.meet.application.MeetService;
 import com.mogaco.project.meet.application.MeetingNotFoundException;
@@ -15,15 +15,12 @@ import com.mogaco.project.study.domain.Status;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,16 +34,28 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.VARIES;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.snippet.Attributes.attributes;
+import static org.springframework.restdocs.snippet.Attributes.key;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class MeetControllerTest {
+class MeetControllerTest extends BaseControllerTest {
     private static final String VALID_TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY0MDk2MjgwMCwiZXh" +
             "wIjoxNjQwOTYzMTAwfQ.2siRnBJmRU2JXjZY0CkQMgnCHRJN4Dld4_wG6R7T-HQ";
 
@@ -61,12 +70,6 @@ class MeetControllerTest {
 
     @MockBean
     private MeetService meetService;
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    private ObjectMapper mapper;
 
     @MockBean
     private SecurityUtil securityUtil;
@@ -106,14 +109,32 @@ class MeetControllerTest {
     @Test
     void createWithValidAttributes() throws Exception {
         mockMvc.perform(
-                post("/api/v1/meets")
+                RestDocumentationRequestBuilders.
+                        post("/api/v1/meets")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(requestDto))
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(header().string("location", "/meets/1"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(document("create-meet",
+                        requestHeaders(headerWithName("Authorization").description("JWT 토큰")),
+                        requestFields(
+                                fieldWithPath("startedAt").type(VARIES).description("시작일")
+                                        .attributes(key("constraints").value("빈 값을 입력할 수 없습니다.")),
+                                fieldWithPath("time").type(STRING).description("시간")
+                                        .attributes(key("constraints").value("빈 값을 입력할 수 없습니다.")),
+                                fieldWithPath("count").type(NUMBER).description("인원")
+                                        .attributes(key("constraints").value("0보다 큰 값을 입력해야합니다.")),
+                                fieldWithPath("location").type(STRING).description("모임 장소"),
+                                fieldWithPath("title").type(STRING).description("제목")
+                                        .attributes(key("constraints").value("빈 값을 입력할 수 없습니다.")),
+                                fieldWithPath("message").type(STRING).description("본문")
+                                        .attributes(key("constraints").value("빈 값을 입력할 수 없습니다.")),
+                                fieldWithPath("subject").type(STRING).description("주제").optional()
+                        ))
+                );
 
         verify(meetService).createMeeting(any(MeetRequestDto.class), anyLong());
     }
@@ -126,7 +147,7 @@ class MeetControllerTest {
         mockMvc.perform(
                 post("/api/v1/meets")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(dto))
+                        .content(objectMapper.writeValueAsString(dto))
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(status().isBadRequest());
@@ -138,7 +159,7 @@ class MeetControllerTest {
                 post("/api/v1/meets")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(requestDto))
+                        .content(objectMapper.writeValueAsString(requestDto))
 
         )
                 .andExpect(status().isUnauthorized());
@@ -182,14 +203,29 @@ class MeetControllerTest {
         final MeetJoinDto meetJoinDto = new MeetJoinDto(GIVEN_ID, "10:00 ~ 14:00", "DDD");
 
         mockMvc.perform(
-                post("/api/v1/meets/{id}/join", GIVEN_ID)
+                RestDocumentationRequestBuilders.
+                        post("/api/v1/meets/{id}/join", GIVEN_ID)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(meetJoinDto))
+                        .content(objectMapper.writeValueAsString(meetJoinDto))
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(header().string("location", "/meets/1"))
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andDo(print())
+                .andDo(document("join-meeting",
+                        requestHeaders(headerWithName("Authorization").description("JWT 토큰")),
+                        pathParameters(
+                                parameterWithName("id").description("모임 식별자")
+                        ),
+                        requestFields(
+                                attributes(key("meet").value("Fields for meeting join")),
+                                fieldWithPath("id").type(NUMBER).description("모임 식별자"),
+                                fieldWithPath("time").type(STRING).description("모임 참가시간")
+                                        .attributes(key("constraints").value("한 글자 이상 입력해야합니다.")),
+                                fieldWithPath("subject").type(STRING).description("참가주제")
+                        ))
+                );
 
         verify(meetService).joinMeeting(anyLong(), anyLong(), any(MeetJoinDto.class));
     }
@@ -202,7 +238,7 @@ class MeetControllerTest {
                 post("/api/v1/meets/{id}/join", GIVEN_ID)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(meetJoinDto))
+                        .content(objectMapper.writeValueAsString(meetJoinDto))
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(status().isBadRequest());
@@ -216,7 +252,7 @@ class MeetControllerTest {
                 post("/api/v1/meets/{id}/join", GIVEN_ID)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(meetJoinDto))
+                        .content(objectMapper.writeValueAsString(meetJoinDto))
         )
                 .andExpect(status().isUnauthorized());
     }
@@ -236,11 +272,27 @@ class MeetControllerTest {
                 .willReturn(Collections.singletonList(myMeetResponseDto));
 
         mockMvc.perform(
-                get("/api/v1/meets/join/{id}", GIVEN_ID)
+                RestDocumentationRequestBuilders.
+                        get("/api/v1/meets/join/{id}", GIVEN_ID)
                         .header("Authorization", "Bearer " + VALID_TOKEN)
         )
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString(GIVEN_TITLE)));
+                .andExpect(content().string(containsString(GIVEN_TITLE)))
+                .andDo(print())
+                .andDo(document("joined-meeting",
+                        requestHeaders(headerWithName("Authorization").description("JWT 토큰")),
+                        pathParameters(
+                                parameterWithName("id").description("회원 식별자")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].meetId").type(NUMBER).description("회원 식별자"),
+                                fieldWithPath("[].startedAt").type(VARIES).description("시작일"),
+                                fieldWithPath("[].title").type(STRING).description("제목"),
+                                fieldWithPath("[].status").type(VARIES).description("신청상태"),
+                                fieldWithPath("[].position").type(VARIES).description("참가자 위치"),
+                                fieldWithPath("[].meetStatus").type(VARIES).description("모임 개최 여부")
+                        ))
+                );
 
         verify(meetService).getJoinMeetings(anyLong());
     }
@@ -249,10 +301,17 @@ class MeetControllerTest {
     @Test
     void destroyWithExistedId() throws Exception {
         mockMvc.perform(
-                delete("/api/v1/meets/{id}", GIVEN_ID)
+                RestDocumentationRequestBuilders.
+                        delete("/api/v1/meets/{id}", GIVEN_ID)
                         .header("Authorization", "Bearer " + VALID_TOKEN)
 
-        ).andExpect(status().isNoContent());
+        ).andExpect(status().isNoContent())
+                .andDo(document("delete-meeting",
+                        pathParameters(
+                                parameterWithName("id").description("모임 식별자")
+                        ),
+                        requestHeaders(headerWithName("Authorization").description("JWT 토큰"))
+                ));
 
         verify(meetService).deleteMeeting(GIVEN_ID);
     }
