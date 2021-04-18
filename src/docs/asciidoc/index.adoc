@@ -1,0 +1,306 @@
+= Rest Docs API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+
+[[introduction]]
+== Overview
+
+모여서 각자 코딩하기 API
+
+[[overview]]
+== HTTP verbs
+
+HTTP 동사(verbs)는 표준 HTTP와 REST 규약을 따릅니다.
+
+|===
+| 동사 | 용례
+
+| `GET`
+| 리소스를 가져올 때 사용
+
+| `POST`
+| 새 리소스를 만들 때 사용
+
+| `PUT`
+| 리소스를 수정할 때 사용
+
+| `PATCH`
+| 리소스의 일부를 수정할 때 사용
+
+| `DELETE`
+| 리소스를 삭제할 떄 사용
+|===
+
+[[overview-http-status-codes]]
+== HTTP status code
+
+HTTP 상태 코드는 표준 HTTP와 REST 규약을 따릅니다.
+
+|===
+| 상태 코드 | 용례
+
+| `200 OK`
+| 요청을 성공적으로 처리함
+
+| `201 Created`
+| 새 리소스를 성공적으로 생성함.
+
+| `204 No Content`
+| 요청에 대해서 보내줄 수 있는 콘텐츠가 없습니다.
+
+| `400 Bad Request`
+| 잘못된 요청을 보낸 경우.
+응답 본문에 더 오류에 대한 정보가 담겨있다.
+
+| `403 Forbidden`
+| 클라이언트는 콘텐츠에 접근할 권리를 가지고 있지 않습니다.
+
+| `404 Not Found`
+| 요청한 리소스가 없음.
+|===
+
+[[MEMBER]]
+== MEMBER
+
+=== GET /members/{id}
+
+회원에 대한 자세한 정보를 돌려준다.
+
+==== Request
+:path: {snippets}/get-member
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request Path Parameters:
+
+include::{path}/path-parameters.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response Fields:
+include::{path}/response-fields.adoc[]
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Register /members
+
+회원을 등록한다.
+
+==== Request
+:path: {snippets}/register-member
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Update /members/{id}
+
+회원 정보를 갱신한다.
+
+==== Request
+:path: {snippets}/update-member
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+
+Request Path Parameters:
+
+include::{path}/path-parameters.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+
+
+=== Delete /members/{id}
+
+회원을 삭제한다.
+
+==== Request
+:path: {snippets}/delete-member
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+
+
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== GET /members/me
+
+내 회원 정보를 돌려준다.
+
+==== Request
+:path: {snippets}/myinfo
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response Fields:
+include::{path}/response-fields.adoc[]
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+[[AUTH]]
+== AUTH
+
+=== Login  /auth
+
+사용자 인증 요청을 처리하고 인증 정보를 리턴한다.
+
+==== Request
+:path: {snippets}/login
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+[[MEET]]
+== MEET
+
+=== GET /meets/join/{id}
+
+참가한 모임 대한 정보를 돌려준다.
+
+==== Request
+:path: {snippets}/joined-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request Path Parameters:
+
+include::{path}/path-parameters.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response Fields:
+include::{path}/response-fields.adoc[]
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Create /meets
+
+모임을 등록한다.
+
+==== Request
+:path: {snippets}/create-meet
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Join /meets
+
+모임에 참가한다.
+
+==== Request
+:path: {snippets}/join-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request Fields:
+
+include::{path}/request-body.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
+
+=== Delete /meets/{id}
+
+모임을 삭제한다.
+
+==== Request
+:path: {snippets}/delete-meeting
+
+CURL:
+
+include::{path}/curl-request.adoc[]
+
+Request HTTP Example:
+include::{path}/http-request.adoc[]
+
+==== Response
+
+Response HTTP Example:
+
+include::{path}/http-response.adoc[]
